@@ -22,9 +22,9 @@ Rectangle {
         verticalRadius:   Math.min(parent.width,parent.height)   ;
         angle: 0;
         gradient: Gradient {
-            GradientStop { position: 0.0; color:Qt.rgba(0.153,0.135,0.135,0.85) }
-            GradientStop { position: 0.5; color:Qt.rgba(0.115,0.115,0.115,0.96) }
-			GradientStop { position: 1.0; color:Qt.rgba(0.100,0.100,0.100,1.00) }
+            GradientStop { position: 0.0; color:Qt.rgba(0.153,0.135,0.135,0.85); }
+            GradientStop { position: 0.5; color:Qt.rgba(0.115,0.115,0.115,0.96); }
+			GradientStop { position: 1.0; color:Qt.rgba(0.098,0.096,0.097,1.00); }
         }
     }
 
