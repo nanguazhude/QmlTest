@@ -24,7 +24,7 @@ Rectangle {
         horizontalAlignment: Image.AlignHCenter;
         verticalAlignment: Image.AlignVCenter;
         smooth: true;
-        rotation: 33.2;
+        rotation: 31.2 + Math.random()*5.02 ;
         DropShadow{
             anchors.fill: parent;
             horizontalOffset: 3;
