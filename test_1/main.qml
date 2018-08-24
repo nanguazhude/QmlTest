@@ -14,6 +14,28 @@ Rectangle {
     z:0;
     color :( function(){ var tmpVar = Math.random()/6.3; return Qt.rgba(0.05+tmpVar ,tmpVar,tmpVar ,1) ;} )()
 
+    Image{
+        z : 0.1;
+        anchors.centerIn: parent;
+        width:parent.width*3;
+        height: parent.height*3;
+        source: "qrc:///background.png";
+        fillMode: Image.Tile;
+        horizontalAlignment: Image.AlignHCenter;
+        verticalAlignment: Image.AlignVCenter;
+        smooth: true;
+        rotation: 33.2;
+        DropShadow{
+            anchors.fill: parent;
+            horizontalOffset: 3;
+            verticalOffset: 3;
+            radius: 8.0;
+            samples: 17;
+            color: "#80000000";
+            source: parent;
+        }
+    }
+
     //粒子系统
     ParticleSystem {
         id: _id_particleSystem;
@@ -45,7 +67,7 @@ Rectangle {
         }
 
         group : "group0" ;
-
+        z:3;
     }
 
     Emitter {
@@ -71,7 +93,7 @@ Rectangle {
         }
 
         group : "group1" ;
-
+        z : 3 ;
     }
 
     //粒子 0
@@ -84,10 +106,11 @@ Rectangle {
         greenVariation : 0.3;
         redVariation : 0.3;
         alphaVariation: 0.3;
-		rotation : 180 ;
-		rotationVariation : 90; 
+        rotation : 180 ;
+        rotationVariation : 90;
         groups:["group0"];
         entryEffect : ImageParticle.Fade;
+        z : 3 ;
     }
 
     //粒子 1
@@ -100,15 +123,16 @@ Rectangle {
         greenVariation : 0.3;
         redVariation : 0.3;
         alphaVariation: 0.3;
-		rotation : 180 ;
-		rotationVariation : 90; 
+        rotation : 180 ;
+        rotationVariation : 90;
         groups: ["group1"];
+        z : 3 ;
     }
 
     /*change mask*/
     function change_image(){
         _id_particleSystem.stop()                                ;
-		var tmpVar = Math.random()/6.3                           ;
+        var tmpVar = Math.random()/6.3                           ;
         _id_root.color = Qt.rgba(0.05+tmpVar ,tmpVar ,tmpVar ,1) ;
         _id_mask_shape_0.source      = get_maskshape_file_name() ;
         _id_mask_shape_1.source      = _id_mask_shape_0.source   ;
