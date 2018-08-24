@@ -4,7 +4,6 @@ QT += core
 QT += gui
 QT += widgets
 
-CONFIG += console
 win32-msvc*{
     QMAKE_CXXFLAGS += /std:c++latest
     QMAKE_CXXFLAGS += /await
@@ -42,6 +41,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 CONFIG(debug,debug|release){
     DESTDIR = $$PWD/../bin/debug
+    CONFIG += console
 }else{
     DESTDIR = $$PWD/../bin/release
 }
