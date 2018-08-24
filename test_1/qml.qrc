@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>glowdot.png</file>
+        <file>star.png</file>
+        <file>_shaped.png</file>
+    </qresource>
+</RCC>
