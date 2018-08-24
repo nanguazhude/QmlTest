@@ -78,7 +78,6 @@ void View::keyPressEvent(QKeyEvent*e) {
 void View::_p_update_counter(QObject * varRootObject) {
 	auto varCount = varRootObject->property("theCounter").toInt() + 1;
 	if (varCount > 164) { varCount = 100; }
-	varRootObject->setProperty("theCounter", QVariant::fromValue(varCount));
 	{
 		QDir varDir{ qApp->applicationDirPath() };
 		varDir.mkpath(varDir.absoluteFilePath(QStringLiteral("tmp")));
@@ -86,6 +85,7 @@ void View::_p_update_counter(QObject * varRootObject) {
 		QFile::remove(varTarget);
 		QFile::copy(varDir.absoluteFilePath(QStringLiteral("shaped.png")), varTarget);
 	}
+    varRootObject->setProperty("theCounter", QVariant::fromValue(varCount));
 }
 
 
