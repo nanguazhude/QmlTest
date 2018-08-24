@@ -13,6 +13,8 @@ public:
 protected:
     virtual void keyPressEvent(QKeyEvent *ev) override;
     using Super = QQuickView;
+private:
+	static void _p_update_counter(QObject *);
 };
 
 #endif // VIEW_HPP

@@ -67,12 +67,27 @@ void View::keyPressEvent(QKeyEvent*e) {
 		{
 			QQuickItem * varRootObject = this->rootObject();
 			if (nullptr == varRootObject) { return; }
+			_p_update_counter(varRootObject);
 			QMetaObject::invokeMethod(varRootObject, "change_image", Qt::DirectConnection);
 		}
 		return;
 	}
 	return Super::keyPressEvent(e);
 }
+
+void View::_p_update_counter(QObject * varRootObject) {
+	auto varCount = varRootObject->property("theCounter").toInt() + 1;
+	if (varCount > 164) { varCount = 100; }
+	varRootObject->setProperty("theCounter", QVariant::fromValue(varCount));
+	{
+		QDir varDir{ qApp->applicationDirPath() };
+		varDir.mkpath(varDir.absoluteFilePath(QStringLiteral("tmp")));
+		const auto varTarget = varDir.absoluteFilePath(QStringLiteral("tmp/shaped") + QString::number(varCount) + QStringLiteral(".png"));
+		QFile::remove(varTarget);
+		QFile::copy(varDir.absoluteFilePath(QStringLiteral("shaped.png")), varTarget);
+	}
+}
+
 
 
 
