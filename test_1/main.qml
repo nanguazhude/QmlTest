@@ -14,6 +14,20 @@ Rectangle {
     z:0;
     color :( function(){ var tmpVar = Math.random()/6.3; return Qt.rgba(0.05+tmpVar ,tmpVar,tmpVar ,1) ;} )()
 
+    RadialGradient {
+        anchors.fill: parent ;
+        horizontalOffset: 0;
+        verticalOffset: 0;
+        horizontalRadius: Math.min(parent.width,parent.height)   ;
+        verticalRadius:   Math.min(parent.width,parent.height)   ;
+        angle: 0;
+        gradient: Gradient {
+            GradientStop { position: 0.0; color:Qt.rgba(0.153,0.135,0.135,0.85) }
+            GradientStop { position: 0.5; color:Qt.rgba(0.115,0.115,0.115,0.96) }
+			GradientStop { position: 1.0; color:Qt.rgba(0.100,0.100,0.100,1.00) }
+        }
+    }
+
     Image{
         z : 0.1;
         anchors.centerIn: parent;
@@ -27,9 +41,9 @@ Rectangle {
         rotation: 31.2 + Math.random()*5.02 ;
         DropShadow{
             anchors.fill: parent;
-            horizontalOffset: 3;
-            verticalOffset: 3;
-            radius: 8.0;
+            horizontalOffset: 0.5;
+            verticalOffset: 0.5;
+            radius: 1.0;
             samples: 17;
             color: "#80000000";
             source: parent;
