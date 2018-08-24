@@ -12,7 +12,7 @@ Rectangle {
     height: 480;
     border.width: 0;
     z:0;
-    color : Qt.rgba( Math.random()/6.3 ,Math.random()/6.2 ,Math.random()/6.1 ,1) ;
+    color :( function(){ var tmpVar = Math.random()/6.3; return Qt.rgba( tmpVar ,tmpVar,tmpVar ,1) ;} )()
 
     //粒子系统
     ParticleSystem {
@@ -107,7 +107,8 @@ Rectangle {
     /*change mask*/
     function change_image(){
         _id_particleSystem.stop()                                ;
-        _id_root.color = Qt.rgba( Math.random()/6.3 ,Math.random()/6.2 ,Math.random()/6.1 ,1);
+		var tmpVar = Math.random()/6.3                           ;
+        _id_root.color = Qt.rgba( tmpVar ,tmpVar ,tmpVar ,1)     ;
         _id_mask_shape_0.source      = get_maskshape_file_name() ;
         _id_mask_shape_1.source      = _id_mask_shape_0.source   ;
         _id_emitter_0.maximumEmitted = get_maximumemitted_0()    ;

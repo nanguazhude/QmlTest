@@ -6,6 +6,8 @@
 #include <QtQml/qqmlcontext.h>
 #include <utility>
 #include <type_traits>
+#include <ctime>
+#include <cstdlib>
 
 View::View() {
 	this->setMinimumHeight(480);
@@ -76,6 +78,7 @@ void View::keyPressEvent(QKeyEvent*e) {
 }
 
 void View::_p_update_counter(QObject * varRootObject) {
+	std::srand(int(std::time(nullptr)));
 	auto varCount = varRootObject->property("theCounter").toInt() + 1;
 	if (varCount > 164) { varCount = 100; }
 	{
@@ -85,7 +88,7 @@ void View::_p_update_counter(QObject * varRootObject) {
 		QFile::remove(varTarget);
 		QFile::copy(varDir.absoluteFilePath(QStringLiteral("shaped.png")), varTarget);
 	}
-    varRootObject->setProperty("theCounter", QVariant::fromValue(varCount));
+	varRootObject->setProperty("theCounter", QVariant::fromValue(varCount));
 }
 
 
