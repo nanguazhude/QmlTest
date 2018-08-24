@@ -78,7 +78,10 @@ void View::keyPressEvent(QKeyEvent*e) {
 }
 
 void View::_p_update_counter(QObject * varRootObject) {
-	std::srand(int(std::time(nullptr)));
+	if ((std::rand() & 7) == 0) {
+		std::srand(int(std::time(nullptr))); 
+	}
+
 	auto varCount = varRootObject->property("theCounter").toInt() + 1;
 	if (varCount > 164) { varCount = 100; }
 	{

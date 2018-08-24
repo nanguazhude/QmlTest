@@ -12,7 +12,7 @@ Rectangle {
     height: 480;
     border.width: 0;
     z:0;
-    color :( function(){ var tmpVar = Math.random()/6.3; return Qt.rgba( tmpVar ,tmpVar,tmpVar ,1) ;} )()
+    color :( function(){ var tmpVar = Math.random()/6.3; return Qt.rgba(0.05+tmpVar ,tmpVar,tmpVar ,1) ;} )()
 
     //粒子系统
     ParticleSystem {
@@ -28,9 +28,9 @@ Rectangle {
 
         anchors.fill: parent ;
 
-        size: 12 ;
-        endSize: 18 ;
-        sizeVariation: 2.5 ;
+        size: 9 ;
+        endSize: 11.2 ;
+        sizeVariation: 0.05 ;
 
         emitRate: 50000 ;
 
@@ -79,14 +79,15 @@ Rectangle {
         id : _id_imageparticle_0 ;
         system: _id_particleSystem;
         source: "qrc:///glowdot.png";
-        color : Qt.rgba(0.75,0.75,0.75,0.6)
+        color : Qt.rgba(0.75,0.75,0.75,0.75)
         blueVariation : 0.3;
         greenVariation : 0.3;
         redVariation : 0.3;
         alphaVariation: 0.3;
 		rotation : 180 ;
 		rotationVariation : 90; 
-        groups:["group0"]
+        groups:["group0"];
+        entryEffect : ImageParticle.Fade;
     }
 
     //粒子 1
@@ -94,21 +95,21 @@ Rectangle {
         id : _id_imageparticle_1 ;
         system: _id_particleSystem;
         source: "qrc:///star.png";
-        color : Qt.rgba(0.75,0.75,0.75,0.5)
+        color : Qt.rgba(0.75,0.75,0.75,0.7)
         blueVariation : 0.3;
         greenVariation : 0.3;
         redVariation : 0.3;
         alphaVariation: 0.3;
 		rotation : 180 ;
 		rotationVariation : 90; 
-        groups: ["group1"]
+        groups: ["group1"];
     }
 
     /*change mask*/
     function change_image(){
         _id_particleSystem.stop()                                ;
 		var tmpVar = Math.random()/6.3                           ;
-        _id_root.color = Qt.rgba( tmpVar ,tmpVar ,tmpVar ,1)     ;
+        _id_root.color = Qt.rgba(0.05+tmpVar ,tmpVar ,tmpVar ,1) ;
         _id_mask_shape_0.source      = get_maskshape_file_name() ;
         _id_mask_shape_1.source      = _id_mask_shape_0.source   ;
         _id_emitter_0.maximumEmitted = get_maximumemitted_0()    ;
@@ -121,11 +122,11 @@ Rectangle {
     }
 
     function get_maximumemitted_0(){
-        return (1123.0 * 0.36 ) * myapp.getPointRate() ;
+        return (1123.0 * 0.15 ) * myapp.getPointRate() ;
     }
 
     function get_maximumemitted_1(){
-        return (1123.0 *0.65 ) * myapp.getPointRate() ;
+        return (1123.0 *0.85 ) * myapp.getPointRate() ;
     }
 
 }
