@@ -39,15 +39,15 @@ Rectangle {
         verticalAlignment: Image.AlignVCenter;
         smooth: true;
         rotation: 31.2 + Math.random()*5.02 ;
-        DropShadow{
-            anchors.fill: parent;
-            horizontalOffset: 0.5;
-            verticalOffset: 0.5;
-            radius: 1.0;
-            samples: 17;
-            color: "#80000000";
-            source: parent;
-        }
+ //       DropShadow{
+ //           anchors.fill: parent;
+ //           horizontalOffset: 0.5;
+ //           verticalOffset: 0.5;
+ //           radius: 1.0;
+ //           samples: 17;
+ //           color: "#80000000";
+ //           source: parent;
+ //       }
     }
 
     //粒子系统
