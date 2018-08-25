@@ -160,11 +160,11 @@ Rectangle {
     }
 
     function get_maximumemitted_0(){
-        return (1123.0 * 0.15 ) * myapp.getPointRate() ;
+        return Math.min(16383, (1123.0 * 0.15 ) * myapp.getPointRate() );
     }
 
     function get_maximumemitted_1(){
-        return (1123.0 *0.85 ) * myapp.getPointRate() ;
+        return Math.min(16383, (1123.0 *0.85 ) * myapp.getPointRate() );
     }
 
 }

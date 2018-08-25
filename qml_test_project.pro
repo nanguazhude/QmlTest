@@ -14,9 +14,11 @@ TEMPLATE = subdirs
 
 test_1.file = $$PWD/test_1/test_1.pro
 test_0.file = $$PWD/test_0/test_0.pro
+test_2.file = $$PWD/test_2/test_2.pro
 
 SUBDIRS += test_0
 SUBDIRS += test_1
+SUBDIRS += test_2
 
 
 
