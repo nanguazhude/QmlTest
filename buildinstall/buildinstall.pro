@@ -24,8 +24,17 @@ DEFINES += FromDir=\\\"$$PWD\\\"
 DEFINES += ToDir=\\\"$$DESTDIR\\\"
 
 #QMAKE_EXTRA_COMPILERS
+#export(QMAKE_EXTRA_COMPILERS)
 #QMAKE_EXTRA_TARGETS
+#export(QMAKE_EXTRA_TARGETS)
 
 SOURCES += \
     main.cpp
+
+#xymoc_.input = HEADERS
+#xymoc_.depends += $$HEADERS
+#xymoc_.output  = xymoc_${QMAKE_FILE_BASE}.cpp
+#xymoc_.commands = $$INSTALL_PATH_/xymoc ${QMAKE_FILE_NAME} ${QMAKE_FILE_OUT}
+#xymoc_.variable_out = SOURCES
+#QMAKE_EXTRA_COMPILERS += xymoc_
 

@@ -11,7 +11,7 @@ int main(int argc, char *argv[]) {
 
 	QApplication app(argc, argv);
 	QDir::setCurrent(app.applicationDirPath());
-
+	
 	View view;
 	view.show();
 
