@@ -4,6 +4,9 @@ QT += core
 QT += gui
 QT += widgets
 
+TARGET = test_1
+TEMPLATE = app
+
 win32-msvc*{
     QMAKE_CXXFLAGS += /std:c++latest
     QMAKE_CXXFLAGS += /await
@@ -33,18 +36,6 @@ QML_IMPORT_PATH =
 
 # Additional import path used to resolve QML modules just for Qt Quick Designer
 QML_DESIGNER_IMPORT_PATH =
-
-# Default rules for deployment.
-qnx: target.path = /tmp/$${TARGET}/bin
-else: unix:!android: target.path = /opt/$${TARGET}/bin
-!isEmpty(target.path): INSTALLS += target
-
-CONFIG(debug,debug|release){
-    DESTDIR = $$PWD/../bin/debug
-    CONFIG += console
-}else{
-    DESTDIR = $$PWD/../bin/release
-}
 
 HEADERS += \
     View.hpp
