@@ -8,7 +8,14 @@ Rectangle {
     width: 500 ;
     height: 500 ;
 
-	color : Qt.rgba(0.5,1,1,1)
+    color : Qt.rgba(0.5,1,1,1)
+
+    TestX{
+        width : 50 ;
+        height : 50 ;
+        color : Qt.rgba(0.5,1,0.5,1);
+        anchors.centerIn: parent;
+    }
 
 }
 

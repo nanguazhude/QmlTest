@@ -8,7 +8,8 @@ Rectangle {
     width:  100 ;
     height: parent.height /3 ;
 
-    color : Qt.rgba(0.5,0.5,1,1)
+    color : Qt.rgba(0.5,0.6,1,1)
 
 }
+
 

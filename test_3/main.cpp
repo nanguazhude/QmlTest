@@ -17,7 +17,7 @@ int main(int argc, char *argv[]) {
 
 	QQmlComponent * component = new QQmlComponent(
 		view.engine(),
-		QDir(app.applicationDirPath()).absoluteFilePath(QStringLiteral("myqml/test_3/rect1.qml")),
+		QDir(app.applicationDirPath()).absoluteFilePath(QStringLiteral("myqml/test_3/Rect1.qml")),
 		&view);
 
 	{
@@ -27,13 +27,16 @@ int main(int argc, char *argv[]) {
 			auto varItem = dynamic_cast<QQuickItem*>(varObject);
 			varItem->setParent(view->rootObject());
 			varItem->setParentItem(view->rootObject());
-			varItem->setPosition({ 120,20 });
 			component->completeCreate();
+			varItem->setPosition({ 120,20 });
 
 		};
 		if (component->isReady()) { varRun( ); }
 	}
 
+	view.engine()->addImportPath(QStringLiteral("./myqml/test_3"));
+	qDebug() << view.engine()->importPathList();
+	 
 	return app.exec();
 
 }
@@ -41,6 +44,7 @@ int main(int argc, char *argv[]) {
 /*
 Dynamic QML Object Creation from JavaScript
 */
+
 
 
 
