@@ -53,6 +53,7 @@ QMAKE_POST_LINK += $$DESTDIR/buildinstall $$PWD "myqml"
 export(QMAKE_POST_LINK)
 
 DISTFILES += \
-    myqml/test_3/main.qml
+    myqml/test_3/main.qml \
+    myqml/test_3/rect1.qml
 
 
