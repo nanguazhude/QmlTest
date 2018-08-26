@@ -38,5 +38,9 @@ int main(int argc, char *argv[]) {
 
 }
 
+/*
+Dynamic QML Object Creation from JavaScript
+*/
+
 
 
