@@ -1,12 +1,14 @@
 ﻿#include <cstdlib>
 #include <memory>
+#include <list>
 #include <cstddef>
 #include <utility>
 #include <algorithm>
 #include <filesystem>
 #include <iostream>
 #include <fstream>
-#include <list>
+#include <functional>
+#include <execution>
 
 class DutyItem {
 public:
@@ -138,9 +140,13 @@ catch (...) {
 }
 
 inline void Duty::_p_copy_files(const CopyInformation & items) const {
+	std::list< std::pair<std::filesystem::path,std::filesystem::path> > calls;
 	for (const auto & i : items.files) {
-		_p_copy_a_file(fromDir / i, toDir / i);
+		calls.emplace_back( fromDir / i,   toDir / i );
 	}
+	std::for_each(std::execution::par_unseq,
+		calls.cbegin(), calls.cend(),
+		[](const auto & a) { _p_copy_a_file(a.first,a.second); });
 }
 
 inline void Duty::_p_copy_a_file(const std::filesystem::path & a, const std::filesystem::path & b) try {

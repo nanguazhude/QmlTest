@@ -11,3 +11,4 @@ bin/debug
 *.vcxproj
 *.filters
 *.stash
+*.qmlc

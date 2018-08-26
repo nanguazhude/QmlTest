@@ -40,7 +40,18 @@ QML_DESIGNER_IMPORT_PATH =
 HEADERS += \
     View.hpp
 
+CONFIG(debug,debug|release){
+    DESTDIR = $$PWD/../bin/debug
+    CONFIG += console
+}else{
+    DESTDIR = $$PWD/../bin/release
+    CONFIG += console
+}
+
 #buildinstall
 QMAKE_POST_LINK += $$DESTDIR/buildinstall $$PWD "myqml"
+
+DISTFILES += \
+    myqml/test_3/main.qml
 
 
