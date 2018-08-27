@@ -15,6 +15,9 @@ int main(int argc, char *argv[]) {
 	View view;
 	view.show();
 
+	view.engine()->addImportPath(QStringLiteral("./myqml/test_3"));
+	qDebug() << view.engine()->importPathList();
+
 	QQmlComponent * component = new QQmlComponent(
 		view.engine(),
 		QDir(app.applicationDirPath()).absoluteFilePath(QStringLiteral("myqml/test_3/Rect1.qml")),
@@ -31,12 +34,11 @@ int main(int argc, char *argv[]) {
 			varItem->setPosition({ 120,20 });
 
 		};
-		if (component->isReady()) { varRun( ); }
+
+		if (component->isReady()) { varRun(); }
+		else { qDebug()<< component->errorString(); }
 	}
 
-	view.engine()->addImportPath(QStringLiteral("./myqml/test_3"));
-	qDebug() << view.engine()->importPathList();
-	 
 	return app.exec();
 
 }

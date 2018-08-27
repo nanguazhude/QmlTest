@@ -95,7 +95,25 @@ inline void Duty::copy() const {
 inline void  Duty::_p_create_dirs(const CopyInformation & items) const {
 	for (const auto & i : items.dirs) {
 		try {
-			std::filesystem::create_directories(toDir / i);
+			const auto varPath = toDir / i;
+			do{
+				const auto varStatus = std::filesystem::status(varPath);
+				if (!std::filesystem::exists(varStatus)) {
+					break;
+				}
+				if (!std::filesystem::is_directory(varStatus)) {
+					std::filesystem::remove(varPath);
+					break;
+				}
+				else {
+					const auto varRPath = std::filesystem::canonical(varPath);
+					if (varRPath.filename()!=varPath.filename()) {
+						std::filesystem::rename(varRPath,varPath);
+						return;
+					}
+				}
+			} while (false);
+			std::filesystem::create_directories(varPath);
 		}
 		catch (...) {}
 	}
@@ -140,28 +158,53 @@ catch (...) {
 }
 
 inline void Duty::_p_copy_files(const CopyInformation & items) const {
-	std::list< std::pair<std::filesystem::path,std::filesystem::path> > calls;
+	std::list< std::pair<std::filesystem::path, std::filesystem::path> > calls;
 	for (const auto & i : items.files) {
-		calls.emplace_back( fromDir / i,   toDir / i );
+		calls.emplace_back(fromDir / i, toDir / i);
 	}
-	std::for_each(std::execution::par_unseq,
+	std::for_each(
+#if defined(_DEBUG)
+		std::execution::seq,
+#else
+		std::execution::par_unseq,
+#endif
 		calls.cbegin(), calls.cend(),
-		[](const auto & a) { _p_copy_a_file(a.first,a.second); });
+		[](const auto & a) { _p_copy_a_file(a.first, a.second); });
 }
 
 inline void Duty::_p_copy_a_file(const std::filesystem::path & a, const std::filesystem::path & b) try {
-	if (std::filesystem::exists(b)) {
+	const auto varBStates = std::filesystem::status(b);
+	if (std::filesystem::exists(varBStates)) {
+
+		if ( std::filesystem::is_directory(varBStates) ) {
+			std::filesystem::remove_all(b);
+			std::filesystem::copy(a, b);
+			return;
+		}
+
+		{
+			/*
+			there may be a bug @ case-sensitive
+			so we force rename the file
+			*/
+			auto varPathB = std::filesystem::canonical(b);
+			if (varPathB.filename() != b.filename()) {
+				std::filesystem::rename(varPathB, b);
+			}
+		}
+
 		std::ifstream varFrom{ a,std::ios::binary };
 		std::ifstream varTo{ b,std::ios::binary };
-
-		bool isSame = false;
-
+		
 		if (std::filesystem::file_size(b) == std::filesystem::file_size(a)) {
+
 			constexpr const static int Size = 1024;
 			alignas(4) char blockA[Size];
 			alignas(4) char blockB[Size];
+
 			std::ifstream varFrom(a, std::ios::binary);
 			std::ifstream varTo(b, std::ios::binary);
+
 			do {
 				varFrom.read(blockA, Size);
 				varTo.read(blockB, Size);
@@ -174,23 +217,22 @@ inline void Duty::_p_copy_a_file(const std::filesystem::path & a, const std::fil
 				}
 
 				if (varNext0 < 1) {
-					isSame = true;
-					break;
+					/*the file is same*/
+					return;
 				}
 
 				if (std::memcmp(blockA, blockB, varNext0) != 0) {
 					break;
 				}
 
-			} while (varFrom.good());
+			} while (true);
 		}
 
-		if (false == isSame) {
-			std::filesystem::copy_file(a, b, std::filesystem::copy_options::overwrite_existing);
-		}
+		std::filesystem::copy_file(a, b, std::filesystem::copy_options::overwrite_existing);
+
 	}
 	else {
-		std::filesystem::copy_file(a, b);
+		std::filesystem::copy(a, b);
 	}
 }
 catch (...) {
