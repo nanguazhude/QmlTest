@@ -243,3 +243,20 @@ void sstd::QRunThread::run_event(std::unique_ptr<RunEvent> && arg) {
 sstd::QRunThread::QRunThread(decltype(nullptr)) {
 	if (globalCaller) { thisp = globalCaller->thisp; }
 }
+
+void sstd::QRunThread::add_child(const QRunThread &arg) {
+	if (thisp) {
+		if (arg.thisp == thisp) { return; }
+		if (globalCaller) {
+			if (globalCaller->thisp == thisp) { return; }
+		}
+		thisp->_m_children.insert(arg);
+	}
+}
+
+void sstd::QRunThread::remvoe_child(const QRunThread &arg) {
+	if (thisp) {
+		thisp->_m_children.erase(arg);
+	}
+}
+

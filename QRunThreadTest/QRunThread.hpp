@@ -41,6 +41,7 @@ public:
 public:
 	inline operator bool() const { return bool(thisp); }
 	friend inline bool operator==(const QRunThread &l, const QRunThread &r) { return l.thisp == r.thisp; }
+	friend inline bool operator<(const QRunThread &l, const QRunThread &r) { return l.thisp < r.thisp; }
 public:
 	static QRunThread getRunThread(QObject *);
 	void setQRunThread(QObject *);
@@ -54,6 +55,10 @@ public:
 	inline void run(_t_RunType &&arg) {
 		private_run<1>(std::forward<_t_RunType>(arg));
 	}
+
+public:
+	void add_child(const QRunThread &);
+	void remvoe_child(const QRunThread &);
 private:
     void run_event(std::unique_ptr<RunEvent> &&);
 	void add_run_event_on_thread_quit(std::unique_ptr<RunEvent> &&);
