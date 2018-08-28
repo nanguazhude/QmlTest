@@ -30,6 +30,15 @@ int main(int argc, char *argv[]) {
 		newThread.setQRunThread(&window);
 	}
 
+	{
+		sstd::QRunThread newThread{};
+		newThread.run([]() {
+			sstd::QRunThread newThread{}; 
+			newThread.run([]() {std::cout << "Hellow New Thread! : 2" << std::endl; });
+			newThread.atDestory([]() {std::cout << "destory @ 2" << std::endl; });
+		});
+	}
+
 	window.show();
 
 	return app.exec();
