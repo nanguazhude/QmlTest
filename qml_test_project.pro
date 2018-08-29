@@ -16,14 +16,20 @@ test_0.file = $$PWD/test_0/test_0.pro
 test_1.file = $$PWD/test_1/test_1.pro
 test_2.file = $$PWD/test_2/test_2.pro
 test_3.file = $$PWD/test_3/test_3.pro
+test_4.file = $$PWD/test_4/test_4.pro
 QRunThreadTest,file = $$PWD/QRunThreadTest/QRunThreadTest.pro
 buildinstall.file = $$PWD/buildinstall/buildinstall.pro
+
+SSTDQml = $$PWD/SSTDQml/SSTDQml.pro
 
 test_0.depends+=buildinstall
 test_1.depends+=buildinstall
 test_2.depends+=buildinstall
 test_3.depends+=buildinstall
+SSTDQml.depends += buildinstall
 QRunThreadTest.depends+=buildinstall
+test_4.depends+=buildinstall
+test_4.depends+=SSTDQml
 
 SUBDIRS += test_0
 SUBDIRS += test_1
@@ -31,5 +37,6 @@ SUBDIRS += test_2
 SUBDIRS += test_3
 SUBDIRS += QRunThreadTest
 SUBDIRS += buildinstall
-
+SUBDIRS += SSTDQml
+SUBDIRS += test_4
 
