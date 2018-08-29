@@ -8,7 +8,7 @@ import SSTDQml 1.0
 Rectangle{
     width : 500 ;
     height: 500 ;
-   
+
     MyRectangle{
         anchors.fill: parent;
         fillColor : Qt.rgba(1,0,0,1);
@@ -16,9 +16,10 @@ Rectangle{
     }
 
     TestAny{
-        anchors.fill: parent;
+        anchors.fill : parent;
+        font.pointSize : 52;
     }
 
 }
 
- 
+

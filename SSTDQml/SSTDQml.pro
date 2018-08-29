@@ -3,12 +3,7 @@ TARGET = $$qtLibraryTarget(sstdqml)
 QT += qml quick
 CONFIG += plugin
 
-win32-msvc*{
-    QMAKE_CXXFLAGS += /std:c++latest
-    QMAKE_CXXFLAGS += /await
-}else{
-    CONFIG+=c++17
-}#
+CONFIG += c++11
 
 uri = SSTDQml
 DISTFILES += $$PWD/SSTDQml/qmldir \

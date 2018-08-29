@@ -8,3 +8,4 @@ void SSTDQmlPlugin::registerTypes(const char *uri){
     qmlRegisterType<MyRectangle>(uri, 1, 0, "MyRectangle");
 }
 
+
