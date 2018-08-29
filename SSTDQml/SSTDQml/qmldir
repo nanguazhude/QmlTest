@@ -1,5 +1,5 @@
 module SSTDQml
 plugin sstdqml
 classname SSTDQmlPlugin
+typeinfo plugins.qmltypes
 TestAny 1.0 TestAny.qml
-

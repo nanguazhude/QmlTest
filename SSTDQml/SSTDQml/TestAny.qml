@@ -1,15 +1,8 @@
-import QtQuick 2.9
-import QtQuick.Window 2.2
-import QtQuick.Particles 2.11
-import QtGraphicalEffects 1.0
+import SSTDQml 1.0
 
-Text {
-    width : 100
-    height: 50
-    text: qsTr("名字很重要")
-    horizontalAlignment : Text.AlignHCenter
-    verticalAlignment: Text.AlignVCenter
+MyRectangle{
+    width: 12;
+    height: 12;
+    fillColor: Qt.rgba(0.3,0,0.8,1)
 }
-
-
 

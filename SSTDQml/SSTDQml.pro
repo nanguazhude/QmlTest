@@ -8,7 +8,7 @@ CONFIG += c++11
 uri = SSTDQml
 DISTFILES += $$PWD/SSTDQml/qmldir \
     SSTDQml/TestAny.qml
-DISTFILES += $$PWD/SSTDQml/plugin.qmltypes
+DISTFILES += $$PWD/SSTDQml/plugins.qmltypes
 
 HEADERS += \
     MyRectangle.hpp \

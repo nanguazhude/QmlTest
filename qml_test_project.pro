@@ -17,10 +17,10 @@ test_1.file = $$PWD/test_1/test_1.pro
 test_2.file = $$PWD/test_2/test_2.pro
 test_3.file = $$PWD/test_3/test_3.pro
 test_4.file = $$PWD/test_4/test_4.pro
-QRunThreadTest,file = $$PWD/QRunThreadTest/QRunThreadTest.pro
+QRunThreadTest.file = $$PWD/QRunThreadTest/QRunThreadTest.pro
 buildinstall.file = $$PWD/buildinstall/buildinstall.pro
 
-SSTDQml = $$PWD/SSTDQml/SSTDQml.pro
+SSTDQml.file = $$PWD/SSTDQml/SSTDQml.pro
 
 test_0.depends+=buildinstall
 test_1.depends+=buildinstall
