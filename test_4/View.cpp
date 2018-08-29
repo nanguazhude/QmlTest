@@ -10,7 +10,7 @@
 #include <ctime>
 #include <cstdlib>
 
-View::View() {
+View::View(QWindow *parent) :QQuickView(parent)  {
     this->setMinimumHeight(480);
     this->setMinimumWidth(480);
     this->setResizeMode(QQuickView::SizeViewToRootObject);
@@ -21,7 +21,7 @@ View::View() {
 View::~View() {}
 
 void View::keyPressEvent(QKeyEvent *ev) {
-	return Super::keyPressEvent(ev);
+    return Super::keyPressEvent(ev);
 }
 
 

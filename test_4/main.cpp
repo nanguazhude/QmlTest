@@ -7,15 +7,15 @@
 
 int main(int argc, char *argv[]) {
 
-	QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
-	QApplication app(argc, argv);
-	QDir::setCurrent(app.applicationDirPath());
-	 
-	View view;
-	view.show();
+    QApplication app(argc, argv);
+    QDir::setCurrent(app.applicationDirPath());
 
-	return app.exec();
+    View view;
+    view.show();
+
+    return app.exec();
 
 }
 

@@ -21,7 +21,7 @@ View::View() {
 View::~View() {}
 
 void View::keyPressEvent(QKeyEvent *ev) {
-	return Super::keyPressEvent(ev);
+    return Super::keyPressEvent(ev);
 }
 
 

@@ -8,13 +8,13 @@ class View : public QQuickView {
 public:
     View();
 public:
-	Q_INVOKABLE QString qmlappdir() const;
-	Q_INVOKABLE double getPointRate() const;
+    Q_INVOKABLE QString qmlappdir() const;
+    Q_INVOKABLE double getPointRate() const;
 protected:
     virtual void keyPressEvent(QKeyEvent *ev) override;
     using Super = QQuickView;
 private:
-	static void _p_update_counter(QObject *);
+    static void _p_update_counter(QObject *);
 };
 
 #endif // VIEW_HPP

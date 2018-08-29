@@ -4,17 +4,17 @@
 #include <QtQuick/qquickview.h>
 
 class View : public QQuickView {
-	Q_OBJECT
+    Q_OBJECT
 public:
-	View();
-	~View();
+    View(QWindow *parent = nullptr);
+    ~View();
 public:
 protected:
-	virtual void keyPressEvent(QKeyEvent *ev) override;
-	using Super = QQuickView;
+    virtual void keyPressEvent(QKeyEvent *ev) override;
+    using Super = QQuickView;
 private:
-	class ViewPrivate;
-	ViewPrivate * thisp = nullptr;
+    class ViewPrivate;
+    ViewPrivate * thisp = nullptr;
 };
 
 #endif // VIEW_HPP
