@@ -11,12 +11,9 @@ int main(int argc, char *argv[]) {
 
 	QApplication app(argc, argv);
 	QDir::setCurrent(app.applicationDirPath());
-
+	 
 	View view;
 	view.show();
-
-	//view.engine()->addImportPath(QStringLiteral("./myqml/test_3"));
-	//qDebug() << view.engine()->importPathList();
 
 	return app.exec();
 

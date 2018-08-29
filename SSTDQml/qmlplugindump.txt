@@ -1,0 +1,3 @@
+qmlplugindump -notrelocatable SSTDQml 1.0 G:\QmlTest\bin\release > G:\QmlTest\SSTDQml\SSTDQml\plugin.qmltypes
+
+qmlplugindump -notrelocatable SSTDQml 1.0 G:\QmlTest\bin\debug > G:\QmlTest\SSTDQml\SSTDQml\plugin.qmltypes

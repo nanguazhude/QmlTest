@@ -1,5 +1,5 @@
 TEMPLATE = lib
-TARGET = SSTDQml
+TARGET = $$qtLibraryTarget(sstdqml)
 QT += qml quick
 CONFIG += plugin
 
@@ -11,7 +11,9 @@ win32-msvc*{
 }#
 
 uri = SSTDQml
-DISTFILES += $$PWD/SSTDQml/qmldir
+DISTFILES += $$PWD/SSTDQml/qmldir \
+    SSTDQml/TestAny.qml
+DISTFILES += $$PWD/SSTDQml/plugin.qmltypes
 
 HEADERS += \
     MyRectangle.hpp \

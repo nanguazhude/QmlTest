@@ -1,5 +1,7 @@
-﻿module SSTDQml
-plugin MyRectangle
-
-
+module SSTDQml
+plugin sstdqml
+classname SSTDQmlPlugin
+typeinfo plugin.qmltypes
+designersupported
+TestAny 1.0 TestAny.qml
 

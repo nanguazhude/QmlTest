@@ -32,12 +32,6 @@ SOURCES += \
 
 RESOURCES +=  
 
-# Additional import path used to resolve QML modules in Qt Creator's code model
-QML_IMPORT_PATH =
-
-# Additional import path used to resolve QML modules just for Qt Quick Designer
-QML_DESIGNER_IMPORT_PATH =
-
 HEADERS += \
     View.hpp
 
@@ -56,4 +50,9 @@ export(QMAKE_POST_LINK)
 DISTFILES += \
     myqml/test_4/main.qml
 
+# Additional import path used to resolve QML modules in Qt Creator's code model
+QML_IMPORT_PATH += $$DESTDIR
+
+# Additional import path used to resolve QML modules just for Qt Quick Designer
+QML_DESIGNER_IMPORT_PATH += $$DESTDIR
 
