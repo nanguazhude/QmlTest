@@ -4,7 +4,7 @@
 #include <QtQuick>
 #include <QtWidgets>
 
-int main(int argc,char ** argv){
+int main(int argc, char ** argv) {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
     QGuiApplication app(argc, argv);
@@ -12,9 +12,9 @@ int main(int argc,char ** argv){
 
     QQmlApplicationEngine engine;
     engine.load(QDir(app.applicationDirPath()).
-                     absoluteFilePath(QStringLiteral("myqml/test_text_edit/main.qml")));
-    if (engine.rootObjects().isEmpty()){
-        qDebug()<<"can not load:"
+        absoluteFilePath(QStringLiteral("myqml/test_text_edit/main.qml")));
+    if (engine.rootObjects().isEmpty()) {
+        qDebug() << "can not load:"
             << QDir(app.applicationDirPath()).absoluteFilePath(QStringLiteral("myqml/test_text_edit/main.qml"));
         return -1;
     }
@@ -22,17 +22,17 @@ int main(int argc,char ** argv){
     /******************/
     QObject * varTextEditObject;
     const auto & varRootObjects = engine.rootObjects();
-    for ( const auto & varI : varRootObjects ) {
+    for (const auto & varI : varRootObjects) {
         varTextEditObject = varI->findChild<QObject *>(QStringLiteral("_id_text_edit"));
         if (varTextEditObject) { break; }
     }
 
-    qDebug()<<"cpp:"<< varTextEditObject;
+    qDebug() << "cpp:" << varTextEditObject;
     auto varQQuickTextDocument = varTextEditObject->property("textDocument").value<QQuickTextDocument*>();
     if (varQQuickTextDocument) {
 
         QTextDocument * varTextDocument = varQQuickTextDocument->textDocument();
-        
+
         {
             {
                 QTextCursor varC{ varTextDocument };
@@ -43,7 +43,8 @@ int main(int argc,char ** argv){
                 varFormat.setPadding(10);
                 varFormat.setBorderStyle(QTextFrameFormat::BorderStyle_DotDotDash);
                 varFormat.setBorder(2);
-                varFormat.setBorderBrush(QBrush(QColor(1,200,3)));
+                varFormat.setBorderBrush(QBrush(QColor(1, 200, 3)));
+                varFormat.setBackground(QBrush(QColor(200, 222, 200)));
 
                 auto varFrame = varC.insertFrame(varFormat);
                 QTextCursor varFC{ varFrame };
@@ -55,9 +56,11 @@ int main(int argc,char ** argv){
                     varFC.setBlockCharFormat(varBCF);
                 }
 
-                varFC.insertText( QString::fromUtf8("xxxxfds ladfgsdgfd sgfdsgfdsgf dsgfdsgfd sgfdsgf dsgfdsgfd sgfdsgfdsgjf ldsjalfhd slahfldsahj fkljdsah fewoiuaf"));
+                varFC.insertText(QString::fromUtf8("xxxxfds ladfgsdgfd sgfdsgfdsgf dsgfdsgfd sgfdsgf dsgfdsgfd sgfdsgfdsgjf ldsjalfhd slahfldsahj fkljdsah fewoiuaf"));
+                varFC.insertText("\n");
+                varFC.insertText("fdasfaewwafe");
             }
-             
+
         }
 
         {
@@ -78,7 +81,7 @@ int main(int argc,char ** argv){
         }
 
     }
-    
+
     return app.exec();
 }
 
