@@ -19,16 +19,7 @@ namespace {
             for (int i = 0; i < varLineCout; ++i) {
                 const auto varLine = varLayout->lineAt(i);
                 if (varLine.isValid() == false) { continue; }
-
-                int varN = -1;
-                const auto varS = varLine.cursorToX(&varN, QTextLine::Leading);
-                varN = std::numeric_limits<int>::max();
-                const auto varE = varLine.cursorToX(&varN, QTextLine::Trailing);
-
-                varWith = std::max<double>(varWith,
-                    std::max<double>(varLine.naturalTextWidth(),
-                        std::max<double>(10.0, std::abs(varE - varS))));
-
+                varWith = std::max(varWith,varLine.naturalTextWidth());
             }
         } while (false);
         return varWith;
@@ -63,8 +54,7 @@ namespace {
                 const auto varFrameFormat = frame->frameFormat();
                 const auto varX = varFrameFormat.leftMargin() + (varFrameFormat.padding());
                 varUpdateRect.moveLeft(varX);
-                varUpdateRect.setWidth(std::max(10.0,
-                    12 + varWith - varFrameFormat.rightMargin()));
+                varUpdateRect.setWidth(std::max(10.0,varWith  ));
             }
 
             varTextEditFrame->updateFrameRect(varUpdateRect);
