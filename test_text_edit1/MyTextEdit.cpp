@@ -64,7 +64,7 @@ namespace {
                 const auto varX = varFrameFormat.leftMargin() + (varFrameFormat.padding());
                 varUpdateRect.moveLeft(varX);
                 varUpdateRect.setWidth(std::max(10.0,
-                    12+varWith - varFrameFormat.rightMargin()));
+                    12 + varWith - varFrameFormat.rightMargin()));
             }
 
             varTextEditFrame->updateFrameRect(varUpdateRect);
@@ -148,11 +148,13 @@ QTextFrame * MyTextEdit::create_frame(const TextFrameFormat & arg) {
         varBackgroundItem->setHeight(arg.height()); });
     /****************************/
     //set append data
-    auto varAppendData =
-        dynamic_cast<MyTextEditAdder *>(qmlAttachedPropertiesObject<MyTextEdit>(varBackgroundItem));
-    if (varAppendData) {
-
+    auto varAppendData = /*try read append data*/
+        dynamic_cast<MyTextEditAdder *>(qmlAttachedPropertiesObject<MyTextEdit>(varBackgroundItem, false));
+    if (varAppendData == nullptr) { /*if appened data is null*/
+        varAppendData = /*create the appened data*/
+            dynamic_cast<MyTextEditAdder *>(qmlAttachedPropertiesObject<MyTextEdit>(varBackgroundItem, true));
     }
+    qDebug() << varAppendData;
     /****************************/
     _text_frame_delegate->completeCreate();
     /**********************************************/
