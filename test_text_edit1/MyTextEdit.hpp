@@ -21,6 +21,20 @@ public:
     }
 };
 
+class MyTextEditAdder :public QObject {
+    Q_OBJECT
+public:
+    MyTextEditAdder(QObject * /**/ = nullptr);
+    class BackGroundItemFormat {};
+    class TextFrameFormat :
+        public QTextFrameFormat,
+        public BackGroundItemFormat {
+    public:
+    };
+private:
+    using Super = QObject;
+};
+
 class MyTextEdit : public QQuickItem {
     Q_OBJECT
     Q_PROPERTY(QQmlComponent * textEdit READ getTextEdit WRITE setTextEdit NOTIFY textEditChanged)
@@ -37,9 +51,10 @@ public:
     void setTextFrameDelegate(QQmlComponent *);
     Q_SIGNAL void textFrameDelegateChanged();
 public:
-    class BackGroundItemFormat {};
-    class TextFrameFormat : public QTextFrameFormat, public BackGroundItemFormat {};
+    using TextFrameFormat = MyTextEditAdder::TextFrameFormat;
     QTextFrame * create_frame(const TextFrameFormat &);
+public:
+    static MyTextEditAdder * qmlAttachedProperties(QObject *object);
 private:
     using Super = QQuickItem;
     QQmlComponent * _text_edit_component = nullptr;
@@ -49,6 +64,8 @@ private:
     QAbstractTextDocumentLayout * _layout_text_edit_document = nullptr;
     QQmlComponent * _text_frame_delegate = nullptr;
 };
+
+QML_DECLARE_TYPEINFO(MyTextEdit, QML_HAS_ATTACHED_PROPERTIES)
 
 #endif // MYTESTEDIT_HPP
 

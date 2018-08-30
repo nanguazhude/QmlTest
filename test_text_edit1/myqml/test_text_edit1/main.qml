@@ -22,7 +22,7 @@ Window {
 
             textEdit : TextEdit {
                 width: parent.width ;
-                wrapMode : TextEdit.Wrap;
+                wrapMode : TextEdit.WordWrap;
                 readOnly: true;
                 selectByMouse : true;
             }

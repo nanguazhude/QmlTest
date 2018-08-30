@@ -19,11 +19,16 @@ namespace {
             for (int i = 0; i < varLineCout; ++i) {
                 const auto varLine = varLayout->lineAt(i);
                 if (varLine.isValid() == false) { continue; }
-                int varN = 0;
+
+                int varN = -1;
                 const auto varS = varLine.cursorToX(&varN, QTextLine::Leading);
-                varN = std::numeric_limits<int>::max() ;
+                varN = std::numeric_limits<int>::max();
                 const auto varE = varLine.cursorToX(&varN, QTextLine::Trailing);
-                varWith = std::max(varWith, std::max(10.0, std::abs(varE - varS)));
+
+                varWith = std::max<double>(varWith,
+                    std::max<double>(varLine.naturalTextWidth(),
+                        std::max<double>(10.0, std::abs(varE - varS))));
+
             }
         } while (false);
         return varWith;
@@ -34,9 +39,14 @@ namespace {
     public:
         MyTextDocumnetLayout(QTextDocument * parent) : Super(parent) {}
         QRectF frameBoundingRect(QTextFrame *frame) const override {
+
             const auto varFrameBoundingRect = Super::frameBoundingRect(frame);
             auto varTextEditFrame = dynamic_cast<MyTextEditFrame*>(
                 frame->property(MyTextEditFrame::textEditFramePropertyName()).value<QObject *>());
+
+            if (nullptr == varTextEditFrame) {
+                return varFrameBoundingRect;
+            }
 
             double varWith = std::min(varFrameBoundingRect.width(), 10.0);
             {
@@ -47,11 +57,17 @@ namespace {
                 }
             }
 
-            if (varTextEditFrame) {
-                auto varUpdateRect = varFrameBoundingRect;
-                varUpdateRect.setWidth(varWith);
-                varTextEditFrame->updateFrameRect(varUpdateRect);
+            auto varUpdateRect = varFrameBoundingRect;
+
+            {
+                const auto varFrameFormat = frame->frameFormat();
+                const auto varX = varFrameFormat.leftMargin() + (varFrameFormat.padding());
+                varUpdateRect.moveLeft(varX);
+                varUpdateRect.setWidth(std::max(10.0,
+                    12+varWith - varFrameFormat.rightMargin()));
             }
+
+            varTextEditFrame->updateFrameRect(varUpdateRect);
 
             return varFrameBoundingRect;
         }
@@ -130,6 +146,14 @@ QTextFrame * MyTextEdit::create_frame(const TextFrameFormat & arg) {
         varBackgroundItem->setY(arg.y());
         varBackgroundItem->setWidth(arg.width());
         varBackgroundItem->setHeight(arg.height()); });
+    /****************************/
+    //set append data
+    auto varAppendData =
+        dynamic_cast<MyTextEditAdder *>(qmlAttachedPropertiesObject<MyTextEdit>(varBackgroundItem));
+    if (varAppendData) {
+
+    }
+    /****************************/
     _text_frame_delegate->completeCreate();
     /**********************************************/
 
@@ -144,5 +168,13 @@ void MyTextEdit::setTextFrameDelegate(QQmlComponent * arg) {
     }
     _text_frame_delegate = arg;
     textFrameDelegateChanged();
+}
+
+MyTextEditAdder::MyTextEditAdder(QObject * arg) :Super(arg) {
+
+}
+
+MyTextEditAdder * MyTextEdit::qmlAttachedProperties(QObject *object) {
+    return new MyTextEditAdder(object);
 }
 

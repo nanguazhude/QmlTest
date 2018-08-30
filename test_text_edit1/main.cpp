@@ -35,6 +35,10 @@ int main(int argc, char ** argv) {
     for (int i = 0; i < 100 ; ++i) {
 
         MyTextEdit::TextFrameFormat varFormat;
+
+        varFormat.setMargin(10);
+        varFormat.setPadding(30);
+
         auto varFrame = varEdit->create_frame(varFormat);
         QTextCursor varFC{ varFrame };
          
@@ -46,7 +50,8 @@ int main(int argc, char ** argv) {
             varFC.setBlockCharFormat(varBCF);
         }
 
-        varFC.insertText(QString::fromUtf8("xxxxfds ladfgsdgfd sgfdsgfdsgf dsgfdsgfd sgfdsgf dsgfdsgfd sgfdsgfdsgjf ldsjalfhd slahfldsahj fkljdsah fewoiuaf"));
+        varFC.insertText(QString::number(i)+QStringLiteral(" :\n"));
+        varFC.insertText(QString::fromUtf8("xxxxfds ladfgsdgfd sgfdsgfds ").repeated(std::max(1,(std::rand()&3))));
         varFC.insertText("\n");
         varFC.insertText("fdasfaewwafe");
         
