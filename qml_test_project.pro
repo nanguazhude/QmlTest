@@ -31,6 +31,9 @@ QRunThreadTest.depends+=buildinstall
 test_4.depends+=buildinstall
 test_4.depends+=SSTDQml
 
+test_text_edit.file = $$PWD/test_text_edit/test_text_edit.pro
+test_text_edit.depends+=buildinstall
+
 SUBDIRS += test_0
 SUBDIRS += test_1
 SUBDIRS += test_2
@@ -39,4 +42,5 @@ SUBDIRS += QRunThreadTest
 SUBDIRS += buildinstall
 SUBDIRS += SSTDQml
 SUBDIRS += test_4
+SUBDIRS += test_text_edit
 
