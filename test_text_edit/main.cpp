@@ -30,9 +30,52 @@ int main(int argc,char ** argv){
     qDebug()<<"cpp:"<< varTextEditObject;
     auto varQQuickTextDocument = varTextEditObject->property("textDocument").value<QQuickTextDocument*>();
     if (varQQuickTextDocument) {
+
         QTextDocument * varTextDocument = varQQuickTextDocument->textDocument();
+        
+        {
+            {
+                QTextCursor varC{ varTextDocument };
+                varC.movePosition(QTextCursor::End);
+                QTextFrameFormat varFormat;
 
+                varFormat.setMargin(10);
+                varFormat.setPadding(10);
+                varFormat.setBorderStyle(QTextFrameFormat::BorderStyle_DotDotDash);
+                varFormat.setBorder(2);
+                varFormat.setBorderBrush(QBrush(QColor(1,200,3)));
 
+                auto varFrame = varC.insertFrame(varFormat);
+                QTextCursor varFC{ varFrame };
+                {
+                    auto varBCF = varFC.blockCharFormat();
+                    auto varFont = varBCF.font();
+                    varFont.setPointSizeF(12);
+                    varBCF.setFont(varFont);
+                    varFC.setBlockCharFormat(varBCF);
+                }
+
+                varFC.insertText( QString::fromUtf8("xxxxfds ladfgsdgfd sgfdsgfdsgf dsgfdsgfd sgfdsgf dsgfdsgfd sgfdsgfdsgjf ldsjalfhd slahfldsahj fkljdsah fewoiuaf"));
+            }
+             
+        }
+
+        {
+            {
+                QTextCursor varC{ varTextDocument };
+                varC.movePosition(QTextCursor::End);
+                varC.insertHtml(u8R"(<img src="image.png"/>)");
+            }
+        }
+
+        {
+            {
+                QTextCursor varC{ varTextDocument };
+                varC.movePosition(QTextCursor::End);
+                varC.insertText("\n\n\n");
+                varC.insertHtml(u8R"(<img src="cat.gif"/>)");
+            }
+        }
 
     }
     

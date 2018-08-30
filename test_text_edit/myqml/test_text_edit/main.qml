@@ -16,12 +16,12 @@ Window {
         gradient: Gradient {
             GradientStop {
                 position: 0
-                color: Qt.rgba(0.3,0.3,0.3,1)
+                color: Qt.rgba(0.75,0.75,0.77,1)
             }
 
             GradientStop {
                 position: 1
-                color: Qt.rgba(0.4,0.4,0.4,1)
+                color: Qt.rgba(0.85,0.85,0.9,1)
             }
         }
         rotation: 45;
@@ -33,8 +33,11 @@ Window {
         anchors.fill: parent ;
         id : _id_text_edit;
         objectName: "_id_text_edit";
-        font.pointSize : 32;
+        font.pointSize : 10;
+        wrapMode : TextEdit.Wrap;
         Component.onCompleted: { console.log( _id_text_edit ) }
+        readOnly: true;
+        selectByMouse : true;
     }
 }
 
