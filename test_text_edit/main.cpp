@@ -20,7 +20,7 @@ int main(int argc, char ** argv) {
     }
 
     /******************/
-    QObject * varTextEditObject;
+    QObject * varTextEditObject = nullptr;
     const auto & varRootObjects = engine.rootObjects();
     for (const auto & varI : varRootObjects) {
         varTextEditObject = varI->findChild<QObject *>(QStringLiteral("_id_text_edit"));
@@ -32,6 +32,7 @@ int main(int argc, char ** argv) {
     if (varQQuickTextDocument) {
 
         QTextDocument * varTextDocument = varQQuickTextDocument->textDocument();
+        qDebug() << varTextDocument;
 
         {
             {
