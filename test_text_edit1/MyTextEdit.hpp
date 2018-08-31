@@ -5,21 +5,7 @@
 #include <QtQuick/qquickitem.h>
 #include <QtGui/qtextdocument.h>
 #include <QtGui/qabstracttextdocumentlayout.h>
-
-class MyTextEditFrame : public QObject {
-    Q_OBJECT
-private:
-    QRectF _rect;
-public:
-    MyTextEditFrame(const QRectF & arg,QObject * p):_rect(arg),QObject(p) {}
-    constexpr static const char * textEditFramePropertyName() { return "\xF3""\xF2""\xF1" "texteditframe"; }
-    Q_SIGNAL void frameRectChanged(const QRectF &);
-    void updateFrameRect(const QRectF & arg) { 
-        if (arg == _rect) { return; }
-        _rect = arg;
-        frameRectChanged(_rect);
-    }
-};
+#include <QtCore/qpointer.h>
 
 class MyTextEditAdder :public QObject {
     Q_OBJECT
@@ -63,6 +49,24 @@ private:
     QTextDocument * _text_edit_document = nullptr;
     QAbstractTextDocumentLayout * _layout_text_edit_document = nullptr;
     QQmlComponent * _text_frame_delegate = nullptr;
+};
+
+class MyTextEditFrame : public QObject {
+    Q_OBJECT
+private:
+    QRectF _rect;
+    QPointer< MyTextEditAdder > _adder;
+public:
+    MyTextEditFrame(const QRectF & arg, QObject * p) :_rect(arg), QObject(p) {}
+    constexpr static const char * textEditFramePropertyName() { return "\xF3""\xF2""\xF1" "texteditframe"; }
+    Q_SIGNAL void frameRectChanged(const QRectF &);
+    void updateFrameRect(const QRectF & arg) {
+        if (arg == _rect) { return; }
+        _rect = arg;
+        frameRectChanged(_rect);
+    }
+    inline MyTextEditAdder * getAttached() const { return _adder.data(); }
+    void setAttached(MyTextEditAdder * arg) { _adder = arg; }
 };
 
 QML_DECLARE_TYPEINFO(MyTextEdit, QML_HAS_ATTACHED_PROPERTIES)

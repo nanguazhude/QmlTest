@@ -144,7 +144,8 @@ QTextFrame * MyTextEdit::create_frame(const TextFrameFormat & arg) {
         varAppendData = /*create the appened data*/
             dynamic_cast<MyTextEditAdder *>(qmlAttachedPropertiesObject<MyTextEdit>(varBackgroundItem, true));
     }
-    qDebug() << varAppendData;
+    assert(varAppendData);
+    varTextEditFrame->setAttached(varAppendData);
     /****************************/
     _text_frame_delegate->completeCreate();
     /**********************************************/
