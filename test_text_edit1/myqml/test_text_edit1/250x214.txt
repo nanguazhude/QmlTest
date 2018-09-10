@@ -1,0 +1,1 @@
+test image size is : 250 x 214 ;

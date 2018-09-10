@@ -5,30 +5,85 @@
 #include <QtQuick/qquicktextdocument.h>
 #include <private/qtextdocumentlayout_p.h>
 #include <limits>
+#include <QtCore/qtimer.h>
 
+class MyTextEdit;
 namespace {
 
-    inline double getMaxWidth(const QTextBlock & varBlock) {
-        double varWith = 0;
-        do {
-            if (varBlock.isValid() == false) { break; }
-            if (varBlock.lineCount() < 1) { break; }
-            const auto varLayout = varBlock.layout();
-            if (varLayout == nullptr) { break; }
-            const auto varLineCout = varLayout->lineCount();
-            for (int i = 0; i < varLineCout; ++i) {
-                const auto varLine = varLayout->lineAt(i);
-                if (varLine.isValid() == false) { continue; }
-                varWith = std::max(varWith,varLine.naturalTextWidth());
-            }
-        } while (false);
-        return varWith;
-    }
-
+    /*void q_contentsChange(int, int, int);*/
     class MyTextDocumnetLayout : public QTextDocumentLayout {
         using Super = QTextDocumentLayout;
+
+        bool $m$IsDraw = false;
+        MyTextEdit * $m$Editor = nullptr;
+
+        inline double getMaxWidth(const QTextBlock & varBlock) const {
+            double varWith = 0;
+            do {
+                if (varBlock.isValid() == false) { break; }
+                if (varBlock.lineCount() < 1) { break; }
+                const auto varLayout = varBlock.layout();
+                /*********************************************************/
+                if constexpr (false) {
+                    static unsigned int n = 0;
+                    auto varBlockPos = varBlock.begin();
+                    for (; !(varBlockPos.atEnd()); ++varBlockPos) {
+
+                        const auto & varFragment = varBlockPos.fragment();
+                        const auto & varCharFormat = varFragment.charFormat();
+                        if (varCharFormat.isImageFormat() == false) { continue; }
+                        auto varImageFormat = varCharFormat.toImageFormat();
+
+                        qDebug() << varImageFormat.name();
+
+                        const auto varImageNameNew =
+                            QStringLiteral("image://GifImage/myqml/test_text_edit1/cat.gif")
+                            + QString::number(++n);
+                        varImageFormat.setName(varImageNameNew);
+
+                        if ((varFragment.position() < 200) && (varFragment.position() > 100)) {
+                            //qDebug() << varEditor->getTextDocument();
+                            QTextCursor varTC{ $m$Editor->getTextDocument() };
+                            //qDebug() << varFragment.position();
+                            varTC.setPosition(varFragment.position(), QTextCursor::MoveAnchor);
+                            varTC.setPosition(varFragment.position() + 1, QTextCursor::KeepAnchor);
+                            //varTC.setCharFormat(varImageFormat);
+                            //qDebug() << varTC.charFormat().isImageFormat();
+                            //qDebug() <<  varTC.charFormat() ;
+                            varTC.setCharFormat(varImageFormat);
+                            //qDebug() << varFragment.position();
+                        }
+                        //varEditor->q_contentsChange(varFragment.position(), 0, varFragment.length());
+                        //varEditor->q_contentsChange(varFragment.position(), varFragment.length(), 0);
+                    }/*for:*/
+                }
+                /*********************************************************/
+                if (varLayout == nullptr) { break; }
+                const auto varLineCout = varLayout->lineCount();
+                for (int i = 0; i < varLineCout; ++i) {
+                    const auto varLine = varLayout->lineAt(i);
+                    if (varLine.isValid() == false) { continue; }
+                    varWith = std::max(varWith, varLine.naturalTextWidth());
+                }
+            } while (false);
+            return varWith;
+        }
+
     public:
-        MyTextDocumnetLayout(QTextDocument * parent) : Super(parent) {}
+        MyTextDocumnetLayout(QTextDocument * parent, MyTextEdit * edit) :
+            Super(parent),
+            $m$Editor(edit) {
+
+            auto varTimer = new QTimer(this);
+            connect(varTimer, &QTimer::timeout,
+                this, [this]() {
+                this->updateGif(QStringLiteral("image://GifImage/myqml/test_text_edit1/cat.gif"));
+            });
+            varTimer->start(1000);
+
+        }
+
+        /******/
         QRectF frameBoundingRect(QTextFrame *frame) const override {
 
             const auto varFrameBoundingRect = Super::frameBoundingRect(frame);
@@ -39,12 +94,29 @@ namespace {
                 return varFrameBoundingRect;
             }
 
+            if ($m$IsDraw) {
+                return varFrameBoundingRect;
+            }
+
+            class ThisCallLock {
+                MyTextDocumnetLayout * $m$;
+            public:
+                ThisCallLock(MyTextDocumnetLayout*a) :$m$(a) { $m$->$m$IsDraw = true; }
+                ~ThisCallLock() { $m$->$m$IsDraw = false; }
+            }varLock{ const_cast<MyTextDocumnetLayout *>(this) };
+
+
+            /*加快程序运行速度*/
+            //if (varTextEditFrame->isRectChaned(varFrameBoundingRect) == false) { 
+            //    return varFrameBoundingRect; 
+            //}
+
             double varWith = std::min(varFrameBoundingRect.width(), 10.0);
             {
                 auto varPos = frame->begin();
                 const auto varE = frame->end();
                 for (; varPos != varE; ++varPos) {
-                    varWith = std::max(varWith, getMaxWidth(varPos.currentBlock()));
+                    varWith = std::max(varWith, this->getMaxWidth(varPos.currentBlock()));
                 }
             }
 
@@ -54,13 +126,74 @@ namespace {
                 const auto varFrameFormat = frame->frameFormat();
                 const auto varX = varFrameFormat.leftMargin() + (varFrameFormat.padding());
                 varUpdateRect.moveLeft(varX);
-                varUpdateRect.setWidth(std::max(10.0,varWith  ));
+                varUpdateRect.setWidth(std::max(10.0, varWith));
             }
 
             varTextEditFrame->updateFrameRect(varUpdateRect);
 
             return varFrameBoundingRect;
         }
+
+        void updateGif(const QString & arg) {
+            auto varDocument = $m$Editor->getTextDocument();
+            auto varBlock = varDocument->firstBlock();
+
+            //int n = 0;
+            while (varBlock.isValid()) {
+                const auto varCurrentBlock = varBlock;
+                varBlock = varBlock.next();
+
+                auto varBlockPos = varCurrentBlock.begin();
+                for (; !(varBlockPos.atEnd()); ++varBlockPos) {
+
+                    const auto & varFragment = varBlockPos.fragment();
+                    const auto & varCharFormat = varFragment.charFormat();
+                    if (varCharFormat.isImageFormat() == false) { continue; }
+                    auto varImageFormat = varCharFormat.toImageFormat();
+                    if (varImageFormat.name().endsWith(QStringLiteral(".gif"), Qt::CaseInsensitive)) {
+                        if (varImageFormat.name().startsWith(arg,Qt::CaseInsensitive)==false) {
+                            continue;
+                        }
+                    }
+                    else {
+                        continue;
+                    }
+
+                    //qDebug() << varImageFormat.name();
+
+                    if ((varFragment.position() < 300) && (varFragment.position() > 200)) {
+
+                        /*update the frame*/
+                        QTimer::singleShot(0, [
+                            varDocument,
+                                varPosition = varFragment.position(),
+                                varLength = varFragment.length(),
+                                varName = varImageFormat.name(),
+                                varImageFormat
+                        ]() mutable {
+                                QTextCursor varTC{ varDocument };
+                                varTC.setPosition(varPosition);
+                                varTC.setPosition(varPosition + varLength, QTextCursor::KeepAnchor);
+
+                                if (varName.endsWith(QStringLiteral("__1.gif"))) {
+                                    varImageFormat.setName(varName.chopped(7));
+                                }
+                                else {
+                                    varImageFormat.setName(varName + QStringLiteral("__1.gif"));
+                                }
+
+                                varTC.setCharFormat(varImageFormat);
+                            });
+
+                    }
+                   
+                    //qDebug() << n++;
+
+                }
+
+            }
+        }
+
     };
 
 }/*namespace*/
@@ -100,14 +233,17 @@ void MyTextEdit::_create_text_edit_object() {
     assert(varQuickTextDocument);
     _text_edit_document = varQuickTextDocument->textDocument();
     assert(_text_edit_document);
-    _layout_text_edit_document = new MyTextDocumnetLayout(_text_edit_document);
+    _layout_text_edit_document = new MyTextDocumnetLayout(_text_edit_document, this);
     _text_edit_document->setDocumentLayout(_layout_text_edit_document);
+
     /************************************************/
     connect(_layout_text_edit_document, &QAbstractTextDocumentLayout::documentSizeChanged,
         _text_edit, [this](const QSizeF & arg) {
         //this->setWidth(arg.width());
         this->setHeight(arg.height());
     });
+    /*********************************************/
+    connect(this, SIGNAL(q_contentsChange(int, int, int)), _text_edit, SLOT(q_contentsChange(int, int, int)));
 }
 
 QTextFrame * MyTextEdit::create_frame(const TextFrameFormat & arg) {

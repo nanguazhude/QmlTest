@@ -1,5 +1,4 @@
-﻿#ifndef MYTESTEDIT_HPP
-#define MYTESTEDIT_HPP
+﻿#pragma once 
 
 #include <QtQml/qqmlcomponent.h>
 #include <QtQuick/qquickitem.h>
@@ -40,6 +39,8 @@ public:
     using TextFrameFormat = MyTextEditAdder::TextFrameFormat;
     QTextFrame * create_frame(const TextFrameFormat &);
 public:
+    QTextDocument * getTextDocument() const { return _text_edit_document; }
+public:
     static MyTextEditAdder * qmlAttachedProperties(QObject *object);
 private:
     using Super = QQuickItem;
@@ -49,11 +50,14 @@ private:
     QTextDocument * _text_edit_document = nullptr;
     QAbstractTextDocumentLayout * _layout_text_edit_document = nullptr;
     QQmlComponent * _text_frame_delegate = nullptr;
+signals:
+    void q_contentsChange(int, int, int);
 };
 
 class MyTextEditFrame : public QObject {
     Q_OBJECT
 private:
+    QRectF _old_rect;
     QRectF _rect;
     QPointer< MyTextEditAdder > _adder;
 public:
@@ -65,13 +69,17 @@ public:
         _rect = arg;
         frameRectChanged(_rect);
     }
+    bool isRectChaned(const QRectF &arg) {
+        if (_old_rect == arg) { return false; }
+        _old_rect = arg;
+        return true;
+    }
     inline MyTextEditAdder * getAttached() const { return _adder.data(); }
     void setAttached(MyTextEditAdder * arg) { _adder = arg; }
 };
 
 QML_DECLARE_TYPEINFO(MyTextEdit, QML_HAS_ATTACHED_PROPERTIES)
-
-#endif // MYTESTEDIT_HPP
+ 
 
 
 

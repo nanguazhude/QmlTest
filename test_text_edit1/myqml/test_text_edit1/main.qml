@@ -15,6 +15,7 @@ Window {
         height : parent.height;
         contentHeight: _id_textEdit.height ;
         contentWidth: parent.width ;
+
         MyTextEdit{
             id : _id_textEdit;
             width: parent.width ;

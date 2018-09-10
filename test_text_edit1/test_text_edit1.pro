@@ -28,10 +28,16 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
+HEADERS += \
+    MyTextEdit.hpp \
+    GifImageProvider.hpp
+
+
 SOURCES += \
         main.cpp \
     qml_source.cpp \
-    MyTextEdit.cpp
+    MyTextEdit.cpp \
+    GifImageProvider.cpp
 
 RESOURCES +=
 
@@ -57,8 +63,6 @@ export(QMAKE_POST_LINK)
 DISTFILES += \
     myqml/test_text_edit1/main.qml
 
-HEADERS += \
-    MyTextEdit.hpp
 
 
 

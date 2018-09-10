@@ -4,6 +4,7 @@
 #include <QtQuick>
 #include <QtWidgets>
 #include "MyTextEdit.hpp"
+#include "GifImageProvider.hpp"
 
 int main(int argc, char ** argv) {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
@@ -16,6 +17,9 @@ int main(int argc, char ** argv) {
     QQmlApplicationEngine engine;
     engine.load(QDir(app.applicationDirPath()).
         absoluteFilePath(QStringLiteral("myqml/test_text_edit1/main.qml")));
+
+    engine.addImageProvider("GifImage",new GifImageProvider );
+
     if (engine.rootObjects().isEmpty()) {
         qDebug() << "can not load:"
             << QDir(app.applicationDirPath()).absoluteFilePath(QStringLiteral("myqml/test_text_edit/main.qml"));
@@ -32,7 +36,9 @@ int main(int argc, char ** argv) {
     auto varEdit = dynamic_cast<MyTextEdit*>(varTextEditObject);
     if (varEdit == nullptr) { return -2; }
 
-    for (int i = 0; i < 100 ; ++i) {
+    
+
+    for (int i = 0; i < 100  ; ++i) {
 
         MyTextEdit::TextFrameFormat varFormat;
 
@@ -40,22 +46,19 @@ int main(int argc, char ** argv) {
         varFormat.setPadding(30);
 
         auto varFrame = varEdit->create_frame(varFormat);
-        QTextCursor varFC{ varFrame };
-         
-        { 
-            auto varBCF = varFC.blockCharFormat();
-            auto varFont = varBCF.font();
-            varFont.setPointSizeF(12);
-            varBCF.setFont(varFont);
-            varFC.setBlockCharFormat(varBCF);
+                 
+              
+        {
+            QTextCursor varFC{ varFrame };
+            varFC.insertHtml(u8R"(
+<p><font size="7" color="red">This is some text!This is some text!This is some text!This is some text!</font></p>
+<p><img src="image://GifImage/myqml/test_text_edit1/cat.gif" height="214" width="250" /></p>
+)");
         }
 
-        varFC.insertText(QString::number(i)+QStringLiteral(" :\n"));
-        varFC.insertText(QString::fromUtf8("xxxxfds ladfgsdgfd sgfdsgfds ").repeated(std::max(1,(std::rand()&3))));
-        varFC.insertText("\n");
-        varFC.insertText("fdasfaewwafe");
-        
     }  
+
+    
 
     return app.exec();
 }
