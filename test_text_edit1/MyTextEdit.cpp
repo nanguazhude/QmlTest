@@ -83,6 +83,20 @@ namespace {
 
         }
 
+
+
+        void positionInlineObject(QTextInlineObject item, int posInDocument, const QTextFormat &format) override {
+            Super::positionInlineObject(item, posInDocument, format);
+        }
+
+
+        void resizeInlineObject(QTextInlineObject item, int posInDocument, const QTextFormat &format) override {
+            Super::resizeInlineObject(item, posInDocument, format);
+
+            //qDebug() << item.rect();
+            //qDebug() << varImageFormat.name();
+        }
+
         /******/
         QRectF frameBoundingRect(QTextFrame *frame) const override {
 
@@ -151,7 +165,7 @@ namespace {
                     if (varCharFormat.isImageFormat() == false) { continue; }
                     auto varImageFormat = varCharFormat.toImageFormat();
                     if (varImageFormat.name().endsWith(QStringLiteral(".gif"), Qt::CaseInsensitive)) {
-                        if (varImageFormat.name().startsWith(arg,Qt::CaseInsensitive)==false) {
+                        if (varImageFormat.name().startsWith(arg, Qt::CaseInsensitive) == false) {
                             continue;
                         }
                     }
@@ -165,12 +179,19 @@ namespace {
                     //varTC.setPosition(varPosition);
                     //varTC.setPosition(varPosition + varLength, QTextCursor::KeepAnchor);
                     //document()->markContentsDirty(varPosition,varLength);
-                     
+
                     if (varCurrentBlock.layout()->isValidCursorPosition(varPosition)) {
                         const auto varBlockRect = this->blockBoundingRect(varCurrentBlock);
-                        auto varLine = varCurrentBlock.layout()->lineAt(varPosition);
-                        int cursorPos = varPosition;
-                        qDebug() << varLine.cursorToX(&cursorPos, QTextLine::Trailing);
+                        auto varLinePosition = varCurrentBlock.layout()->lineForTextPosition(varPosition);
+                        qDebug() << varLinePosition.position();
+                        int varCursor = varPosition;
+                        auto varX = varLinePosition.cursorToX(&varCursor);
+                        auto varBlockPosition = this->blockBoundingRect(varCurrentBlock);
+                        QRectF varImageRect{
+                            QPointF{ varX,varLinePosition.position().y() + varBlockPosition.topLeft().y()},
+                            QSizeF{ varImageFormat.width(),varImageFormat.height()}
+                        };
+                        qDebug() << varImageRect;
                     }
                     else {
                         qDebug() << "invalid position";
