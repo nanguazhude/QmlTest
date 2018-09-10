@@ -159,35 +159,22 @@ namespace {
                         continue;
                     }
 
-                    //qDebug() << varImageFormat.name();
-
-                    if ((varFragment.position() < 300) && (varFragment.position() > 200)) {
-
-                        /*update the frame*/
-                        QTimer::singleShot(0, [
-                            varDocument,
-                                varPosition = varFragment.position(),
-                                varLength = varFragment.length(),
-                                varName = varImageFormat.name(),
-                                varImageFormat
-                        ]() mutable {
-                                QTextCursor varTC{ varDocument };
-                                varTC.setPosition(varPosition);
-                                varTC.setPosition(varPosition + varLength, QTextCursor::KeepAnchor);
-
-                                if (varName.endsWith(QStringLiteral("__1.gif"))) {
-                                    varImageFormat.setName(varName.chopped(7));
-                                }
-                                else {
-                                    varImageFormat.setName(varName + QStringLiteral("__1.gif"));
-                                }
-
-                                varTC.setCharFormat(varImageFormat);
-                            });
-
+                    const auto varPosition = varFragment.position() - varCurrentBlock.position();
+                    const auto varLength = varFragment.length();
+                    //QTextCursor varTC{ varDocument };
+                    //varTC.setPosition(varPosition);
+                    //varTC.setPosition(varPosition + varLength, QTextCursor::KeepAnchor);
+                    //document()->markContentsDirty(varPosition,varLength);
+                     
+                    if (varCurrentBlock.layout()->isValidCursorPosition(varPosition)) {
+                        const auto varBlockRect = this->blockBoundingRect(varCurrentBlock);
+                        auto varLine = varCurrentBlock.layout()->lineAt(varPosition);
+                        int cursorPos = varPosition;
+                        qDebug() << varLine.cursorToX(&cursorPos, QTextLine::Trailing);
                     }
-                   
-                    //qDebug() << n++;
+                    else {
+                        qDebug() << "invalid position";
+                    }
 
                 }
 
