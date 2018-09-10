@@ -26,9 +26,9 @@ QImage GifImageProvider::requestImage(
     if (size) { *size = { varWidth,varHeight }; }
 
     /*这仅仅是一个占位符，返回一个透明像素即可*/
-    const QImage varImage = []() {
-        QImage varImage{ 10 ,10 ,QImage::Format_RGBA8888 };
-        varImage.fill(QColor(std::rand()&127, std::rand() & 127, std::rand() & 127, 100 ));
+    const static QImage varImage = []() {
+        QImage varImage{ 1 ,1 ,QImage::Format_RGBA8888 };
+        varImage.fill(QColor(0,0,0,0 ));
         return std::move(varImage);
     }();
     return varImage;

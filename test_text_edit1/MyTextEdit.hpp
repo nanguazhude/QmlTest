@@ -40,6 +40,8 @@ public:
     QTextFrame * create_frame(const TextFrameFormat &);
 public:
     QTextDocument * getTextDocument() const { return _text_edit_document; }
+    QQmlEngine * getQQmlEngine() const;
+    QQuickItem * getTextEditObject() const { return _text_edit; }
 public:
     static MyTextEditAdder * qmlAttachedProperties(QObject *object);
 private:

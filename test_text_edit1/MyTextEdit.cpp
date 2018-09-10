@@ -4,8 +4,12 @@
 #include <QtGui/qtextcursor.h>
 #include <QtQuick/qquicktextdocument.h>
 #include <private/qtextdocumentlayout_p.h>
+#include <private/qquickanimatedimage_p.h>
 #include <limits>
 #include <QtCore/qtimer.h>
+#include <QtQuick>
+#include <chrono>
+using namespace std::chrono_literals;
 
 class MyTextEdit;
 namespace {
@@ -70,31 +74,39 @@ namespace {
         }
 
     public:
+         
+        const constexpr static int $m$Timer = -8564;
         MyTextDocumnetLayout(QTextDocument * parent, MyTextEdit * edit) :
             Super(parent),
-            $m$Editor(edit) {
+            $m$Editor(edit) {}
 
-            auto varTimer = new QTimer(this);
-            connect(varTimer, &QTimer::timeout,
-                this, [this]() {
-                this->updateGif(QStringLiteral("image://GifImage/myqml/test_text_edit1/cat.gif"));
-            });
-            varTimer->start(1000);
-
+        void timerEvent(QTimerEvent *event) override {
+            if (event->timerId()==$m$Timer) {
+                event->accept();
+                auto varTime = std::chrono::high_resolution_clock::now();
+                if (std::chrono::abs(varTime - $m$Time) > 8ms) {
+                    $m$Time = std::chrono::high_resolution_clock::now();
+                    this->updateGif();
+                }
+                else {
+                    QCoreApplication::postEvent(this, new QTimerEvent($m$Timer));
+                }
+                return;
+            }
+            return Super::timerEvent(event);
         }
 
-
-
+        std::chrono::high_resolution_clock::time_point $m$Time;
         void positionInlineObject(QTextInlineObject item, int posInDocument, const QTextFormat &format) override {
             Super::positionInlineObject(item, posInDocument, format);
+            $m$Time = std::chrono::high_resolution_clock::now();
+            QCoreApplication::postEvent(this,new QTimerEvent($m$Timer));
         }
-
 
         void resizeInlineObject(QTextInlineObject item, int posInDocument, const QTextFormat &format) override {
             Super::resizeInlineObject(item, posInDocument, format);
-
-            //qDebug() << item.rect();
-            //qDebug() << varImageFormat.name();
+            $m$Time = std::chrono::high_resolution_clock::now();
+            QCoreApplication::postEvent(this, new QTimerEvent($m$Timer));
         }
 
         /******/
@@ -121,9 +133,9 @@ namespace {
 
 
             /*加快程序运行速度*/
-            //if (varTextEditFrame->isRectChaned(varFrameBoundingRect) == false) { 
-            //    return varFrameBoundingRect; 
-            //}
+            if (varTextEditFrame->isRectChaned(varFrameBoundingRect) == false) {
+                return varFrameBoundingRect;
+            }
 
             double varWith = std::min(varFrameBoundingRect.width(), 10.0);
             {
@@ -148,11 +160,14 @@ namespace {
             return varFrameBoundingRect;
         }
 
-        void updateGif(const QString & arg) {
+        std::map<int, QQuickItem*> $m$Items;
+
+        void updateGif() {
             auto varDocument = $m$Editor->getTextDocument();
             auto varBlock = varDocument->firstBlock();
 
-            //int n = 0;
+            std::map<int, QQuickItem*> varItems;
+
             while (varBlock.isValid()) {
                 const auto varCurrentBlock = varBlock;
                 varBlock = varBlock.next();
@@ -165,9 +180,6 @@ namespace {
                     if (varCharFormat.isImageFormat() == false) { continue; }
                     auto varImageFormat = varCharFormat.toImageFormat();
                     if (varImageFormat.name().endsWith(QStringLiteral(".gif"), Qt::CaseInsensitive)) {
-                        if (varImageFormat.name().startsWith(arg, Qt::CaseInsensitive) == false) {
-                            continue;
-                        }
                     }
                     else {
                         continue;
@@ -175,23 +187,37 @@ namespace {
 
                     const auto varPosition = varFragment.position() - varCurrentBlock.position();
                     const auto varLength = varFragment.length();
-                    //QTextCursor varTC{ varDocument };
-                    //varTC.setPosition(varPosition);
-                    //varTC.setPosition(varPosition + varLength, QTextCursor::KeepAnchor);
-                    //document()->markContentsDirty(varPosition,varLength);
 
                     if (varCurrentBlock.layout()->isValidCursorPosition(varPosition)) {
                         const auto varBlockRect = this->blockBoundingRect(varCurrentBlock);
                         auto varLinePosition = varCurrentBlock.layout()->lineForTextPosition(varPosition);
-                        qDebug() << varLinePosition.position();
                         int varCursor = varPosition;
                         auto varX = varLinePosition.cursorToX(&varCursor);
                         auto varBlockPosition = this->blockBoundingRect(varCurrentBlock);
                         QRectF varImageRect{
-                            QPointF{ varX,varLinePosition.position().y() + varBlockPosition.topLeft().y()},
+                            QPointF{ varX + varBlockPosition.topLeft().x(),
+                            varLinePosition.position().y() + varBlockPosition.topLeft().y()},
                             QSizeF{ varImageFormat.width(),varImageFormat.height()}
                         };
-                        qDebug() << varImageRect;
+
+                        auto pos = $m$Items.find(varFragment.position());
+                        if (pos == $m$Items.end()) {
+                            QQmlComponent varContex{ $m$Editor->getQQmlEngine() , "myqml/test_text_edit1/cat_gif.qml" };
+                            auto varAImage = varContex.beginCreate($m$Editor->getQQmlEngine()->rootContext());
+                            varAImage->setParent($m$Editor);
+                            static_cast<QQuickItem*>(varAImage)->setParentItem($m$Editor);
+                            static_cast<QQuickItem*>(varAImage)->setPosition(varImageRect.topLeft());
+                            static_cast<QQuickItem*>(varAImage)->setZ(-500);
+                            varContex.completeCreate();
+                            assert(varItems.count(varFragment.position()) == 0);
+                            varItems.emplace(varFragment.position(), static_cast<QQuickItem*>(varAImage));
+                        }
+                        else {
+                            pos->second->setPosition(varImageRect.topLeft());
+                            varItems.insert($m$Items.extract(pos));
+                        }
+
+                        //qDebug() << varImageRect;
                     }
                     else {
                         qDebug() << "invalid position";
@@ -200,6 +226,15 @@ namespace {
                 }
 
             }
+
+            /*立即清除*/
+            for (const auto & varI : $m$Items) {
+                varI.second->setVisible(false);
+                varI.second->deleteLater();
+            }
+
+            $m$Items = std::move(varItems);
+
         }
 
     };
@@ -252,6 +287,11 @@ void MyTextEdit::_create_text_edit_object() {
     });
     /*********************************************/
     connect(this, SIGNAL(q_contentsChange(int, int, int)), _text_edit, SLOT(q_contentsChange(int, int, int)));
+}
+
+
+QQmlEngine * MyTextEdit::getQQmlEngine() const {
+    return _text_edit_component->creationContext()->engine();
 }
 
 QTextFrame * MyTextEdit::create_frame(const TextFrameFormat & arg) {

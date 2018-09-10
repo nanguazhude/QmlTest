@@ -6,6 +6,8 @@ QT += widgets
 QT += core_private
 QT += gui_private
 QT += widgets_private
+QT += quick_private
+QT += qml_private
 
 TARGET =   test_text_edit1
 TEMPLATE = app
@@ -61,7 +63,8 @@ QMAKE_POST_LINK += $$DESTDIR/buildinstall $$PWD "myqml"
 export(QMAKE_POST_LINK)
 
 DISTFILES += \
-    myqml/test_text_edit1/main.qml
+    myqml/test_text_edit1/main.qml \
+    myqml/test_text_edit1/cat_gif.qml
 
 
 
