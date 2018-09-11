@@ -37,6 +37,9 @@ test_text_edit.depends+=buildinstall
 test_text_edit1.file = $$PWD/test_text_edit1/test_text_edit1.pro
 test_text_edit1.depends+=buildinstall
 
+test_text_edit2.file = $$PWD/test_text_edit2/test_text_edit2.pro
+test_text_edit3.depends+=buildinstall
+
 SUBDIRS += test_0
 SUBDIRS += test_1
 SUBDIRS += test_2
@@ -47,4 +50,5 @@ SUBDIRS += SSTDQml
 SUBDIRS += test_4
 SUBDIRS += test_text_edit
 SUBDIRS += test_text_edit1
+SUBDIRS += test_text_edit2
 
