@@ -892,6 +892,7 @@ void QTextDocumentLayoutPrivate::drawFrameDecoration(QPainter *painter, QTextFra
     /***************************************************/
     //add
     if (_p_drawFrameDecoration(painter,frame,fd,clip,rect)) {
+
         return;
     }
     /***************************************************/
