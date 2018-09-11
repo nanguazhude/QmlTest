@@ -34,10 +34,16 @@ inline void setDefaultFormat() {
 int main(int argc, char ** argv) {
 
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    setDefaultFormat();
 
     QGuiApplication app(argc, argv);
-    setDefaultFormat();
+    
+#if defined(QT_NO_DEBUG)
     QDir::setCurrent(app.applicationDirPath());
+#else
+    //QDir::setCurrent(CURRENT_DEBUG_PATH);
+    QDir::setCurrent(app.applicationDirPath());
+#endif
 
     qmlRegisterType<MyTextEdit>("myqml.test_text_edit",1,0,"MyTextEdit");
 

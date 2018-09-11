@@ -67,7 +67,7 @@ DISTFILES += \
     myqml/test_text_edit1/cat_gif.qml
 
 
-
+DEFINES += CURRENT_DEBUG_PATH=\\\"$$PWD\\\"
 
 
 
