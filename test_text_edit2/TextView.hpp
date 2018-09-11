@@ -1,14 +1,14 @@
 ﻿#pragma once
 
-#include "from_qt_qtextdocumentlayout_p.h"
+#include <QtWidgets/qtextbrowser.h>
 
-class SSTSQTextDocumentLayout : public QTextDocumentLayout {
+class TextBrowser : public QTextBrowser {
+    Q_OBJECT
 public:
-    SSTSQTextDocumentLayout(QTextDocument *);
+    TextBrowser(QWidget *parent = nullptr);
 private:
-    using Super = QTextDocumentLayout;
+    using Super = QTextBrowser;
 };
-
 
 
 

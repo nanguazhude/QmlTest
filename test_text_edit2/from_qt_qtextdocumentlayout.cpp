@@ -893,6 +893,10 @@ void QTextDocumentLayoutPrivate::drawFrameDecoration(QPainter *painter, QTextFra
     //add
     if (_p_drawFrameDecoration(painter,frame,fd,clip,rect)) {
 
+        painter->setRenderHint(QPainter::TextAntialiasing,true);
+        painter->setRenderHint(QPainter::Antialiasing, true);
+        painter->setRenderHint(QPainter::SmoothPixmapTransform, true);
+        painter->setRenderHint(QPainter::HighQualityAntialiasing, true);
         return;
     }
     /***************************************************/

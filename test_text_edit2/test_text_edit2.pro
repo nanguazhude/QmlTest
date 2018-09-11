@@ -40,6 +40,9 @@ SOURCES += $$PWD/TextView.cpp
 HEADERS += $$PWD/from_qt_qtextdocumentlayout_p.h
 SOURCES += $$PWD/from_qt_qtextdocumentlayout.cpp
 
+HEADERS += $$PWD/Application.hpp
+SOURCES += $$PWD/Application.cpp
+
 RESOURCES +=
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
