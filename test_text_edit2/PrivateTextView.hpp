@@ -12,7 +12,7 @@ public:
     static TextItem * getTextItem(QObject *);
     static void setTextItem(QObject *, TextItem *);
 
-    void drawFrameDecoration(QPainter *painter,
+    virtual void drawFrameDecoration(QPainter *painter,
         QTextFrame *frame,
         QTextFrameData *fd,
         const QRectF &clip,
@@ -34,6 +34,9 @@ class TextDocument : public QTextDocument {
     Q_OBJECT
 public:
     TextDocument(QObject *parent = nullptr);
+
+    QTextFrame * appendTextFrame(const QTextFrameFormat &,TextItem*);
+
 private:
     using Super = QTextDocument;
 };
