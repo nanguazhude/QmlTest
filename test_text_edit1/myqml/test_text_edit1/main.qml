@@ -25,7 +25,8 @@ Window {
                 width: parent.width ;
                 wrapMode : TextEdit.WordWrap;
                 readOnly: true;
-                selectByMouse : true;
+                selectByMouse : true ;
+                activeFocusOnPress : true;
             }
 
             textFrameDelegate : Rectangle {

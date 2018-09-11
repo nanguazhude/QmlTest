@@ -113,6 +113,7 @@ namespace {
         QRectF frameBoundingRect(QTextFrame *frame) const override {
 
             const auto varFrameBoundingRect = Super::frameBoundingRect(frame);
+
             auto varTextEditFrame = dynamic_cast<MyTextEditFrame*>(
                 frame->property(MyTextEditFrame::textEditFramePropertyName()).value<QObject *>());
 
@@ -242,7 +243,10 @@ namespace {
 }/*namespace*/
 
 MyTextEdit::MyTextEdit(QQuickItem * parent) : Super(parent) {
-
+    connect(this, &QQuickItem::windowChanged, 
+        this, [](QQuickWindow *win) {
+        if (win) { win->setClearBeforeRendering(true); }
+    });
 }
 
 void MyTextEdit::setTextEdit(QQmlComponent *arg) {

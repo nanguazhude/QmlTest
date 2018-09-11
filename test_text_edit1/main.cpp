@@ -6,10 +6,37 @@
 #include "MyTextEdit.hpp"
 #include "GifImageProvider.hpp"
 
+inline void setDefaultFormat() {
+    auto varFormat = QSurfaceFormat::defaultFormat();
+    if (varFormat.majorVersion() < 4) {
+        varFormat.setVersion(4, 5);
+    }
+    if ((varFormat.majorVersion() == 4) && (varFormat.minorVersion() < 5)) {
+        varFormat.setVersion(4, 5);
+    }
+    varFormat.setProfile(QSurfaceFormat::CoreProfile);
+    varFormat.setSamples(3);
+    varFormat.setAlphaBufferSize(8);
+    varFormat.setBlueBufferSize(8);
+    varFormat.setRedBufferSize(8);
+    varFormat.setGreenBufferSize(8);
+    varFormat.setDepthBufferSize(24);
+    varFormat.setSwapBehavior(QSurfaceFormat::DoubleBuffer);
+    varFormat.setSwapInterval(0);
+#if defined(ENABLE_GL_DEBUG)
+    varFormat.setOption(QSurfaceFormat::DebugContext, true);
+#else
+    varFormat.setOption(QSurfaceFormat::DebugContext, false);
+#endif
+    QSurfaceFormat::setDefaultFormat(varFormat);
+}
+
 int main(int argc, char ** argv) {
+
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
     QGuiApplication app(argc, argv);
+    setDefaultFormat();
     QDir::setCurrent(app.applicationDirPath());
 
     qmlRegisterType<MyTextEdit>("myqml.test_text_edit",1,0,"MyTextEdit");
@@ -19,6 +46,7 @@ int main(int argc, char ** argv) {
         absoluteFilePath(QStringLiteral("myqml/test_text_edit1/main.qml")));
 
     engine.addImageProvider("GifImage",new GifImageProvider );
+
 
     if (engine.rootObjects().isEmpty()) {
         qDebug() << "can not load:"
