@@ -53,6 +53,7 @@ protected:
     bool event(QEvent *) override;
     std::chrono::high_resolution_clock::time_point $m$LastGifLayoutTimeStamp;
     void relayoutGifObjects();
+    void tryRelayoutGifObjects(int = 1);
 
     class GifItemKey {
     public:
@@ -90,6 +91,9 @@ protected:
 
     void insertMovie(const QString &);
     void updateMovie(const QString &);
+public:
+    std::int32_t $m$RelayoutEventCount = 0 ;
+    std::unique_ptr<QEvent> $m$AboutPostEvent;
 };
 
 class TextDocument : public QTextDocument {

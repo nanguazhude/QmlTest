@@ -43,7 +43,8 @@ SOURCES += $$PWD/from_qt_qtextdocumentlayout.cpp
 HEADERS += $$PWD/Application.hpp
 SOURCES += $$PWD/Application.cpp
 
-RESOURCES +=
+RESOURCES += \
+    image.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =

@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/gif">
+        <file>myqml/cat.gif</file>
+    </qresource>
+</RCC>
