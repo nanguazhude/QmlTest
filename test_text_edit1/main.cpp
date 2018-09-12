@@ -86,6 +86,9 @@ int main(int argc, char ** argv) {
             QTextCursor varFC{ varFrame };
             varFC.insertHtml(u8R"(
 <p><font size="7" color="red">This is some text!This is some text!This is some text!This is some text!</font></p>
+)");
+            varFC.insertBlock();
+            varFC.insertHtml(u8R"(
 <p>xxfff fffffff ffffff fffffffffff ffffffffff fffffffffffff ffffffffff ffffxe 323 111 11 11111 111 11 111 1111<img src="image://GifImage/myqml/test_text_edit1/cat.gif" height="214" width="250" /></p>
 )");
         }

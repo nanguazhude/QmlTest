@@ -141,21 +141,30 @@ TextBrowser::TextBrowser(QWidget * arg) : Super(arg) {
     auto varDocument = new TextDocument{ this, this };
     this->setDocument(varDocument);
     /***********************************************************/
-#define TESTTEXTBROWSER
+//#define TESTTEXTBROWSER
 #if defined(TESTTEXTBROWSER)
 
-    QTextFrameFormat varFormat;
-
-    for (int i = 0; i < 100; ++i) {
-        QTextCursor varCursor{ varDocument->appendTextFrame(varFormat, new TextItem{}) };
-        for (int j = 0; j < (1 + (std::rand() & 3)); ++j) {
-            varCursor.insertHtml(QString(QStringLiteral(R"___(
+    class xTextItem : public TextItem {
+    public:
+        QTextFrameFormat $m$TextFrameFormat;
+        QTextFrameFormat getTextFrameFormat() const override { return $m$TextFrameFormat; }
+        QList<QString> getHtmlData() const override {
+            return QList<QString>() <<
+                QString(QStringLiteral(R"___(
 <p>
     <font size="17" color="purple">%1:today is a fine day!</font>
 </p>
-)___")).arg(i));
+)___")).arg(1 + (std::rand() & 3)) << QStringLiteral(R"(
+<p>
+    sdf lds ajf lweh aofi ewah<img src= ":/gif/myqml/cat.gif" />
+</p> )"
+);
+
         }
-        varCursor.insertHtml(R"(<img src= ":/gif/myqml/cat.gif" /> )");
+    };
+
+    for (int i = 0; i < 100; ++i) {
+        varDocument->appendTextFrame(new xTextItem);
     }
 
 #endif
@@ -197,11 +206,29 @@ void TextItem::drawFrameDecoration(
     (void)clip;
 }
 
-QTextFrame * TextDocument::appendTextFrame(const QTextFrameFormat & varF, TextItem * arg) {
-    QTextCursor varTC{ this->rootFrame() };
-    varTC.movePosition(QTextCursor::End);
-    auto varAns = varTC.insertFrame(varF);
-    TextItem::setTextItem(varAns, arg);
+QTextFrame * TextDocument::appendTextFrame(TextItem * arg) {
+    QTextFrame * varAns = nullptr;
+
+    {/*首先插入一个Frame*/
+        QTextCursor varTC{ this->rootFrame() };
+        varTC.movePosition(QTextCursor::End);
+        varAns = varTC.insertFrame(arg->getTextFrameFormat());
+        TextItem::setTextItem(varAns, arg);
+    }
+
+    do {/*插入Html*/
+        QTextCursor varTC{ varAns };
+        const auto varHtmls = arg->getHtmlData();
+        if (varHtmls.empty()) { break; }
+        auto varPos = varHtmls.begin();
+        varTC.insertHtml(*varPos);
+        const auto varEndPos = varHtmls.end();
+        for (++varPos; varPos != varEndPos; ++varPos) {
+            varTC.insertBlock();
+            varTC.insertHtml(*varPos);
+        }
+    } while (false);
+
     return varAns;
 }
 
@@ -287,10 +314,13 @@ void TextDocumentLayout::resizeInlineObject(
     {/*在当前布局中搜索此项，如果找到则返回，否则尝试重新布局*/
         auto varPos = $m$GifItemLayoutData.find(varImageName);
         if (varPos == $m$GifItemLayoutData.end()) {
+            auto varInsertData = $m$GifItemLayoutData.try_emplace(varImageName);
+            varInsertData.first->second.emplace(posInDocument, varImageName);
             tryRelayoutGifObjects(0);
             return;
         }
         if (varPos->second.count(posInDocument) < 1) {
+            varPos->second.emplace(posInDocument, varImageName);
             tryRelayoutGifObjects(0);
             return;
         }

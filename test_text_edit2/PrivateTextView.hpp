@@ -3,6 +3,7 @@
 #include <map>
 #include <set>
 #include <chrono>
+#include <optional>
 #include <QtGui/qmovie.h>
 #include <QtCore/qcache.h>
 #include <QtCore/qobject.h>
@@ -18,11 +19,12 @@ public:
     static TextItem * getTextItem(QObject *);
     static void setTextItem(QObject *, TextItem *);
 
-    virtual void drawFrameDecoration(QPainter *painter,
-        QTextFrame *frame,
-        QTextFrameData *fd,
-        const QRectF &clip,
-        const QRectF &rect);
+    /**绘制边框**/
+    virtual void drawFrameDecoration(QPainter *painter,QTextFrame *frame,QTextFrameData *fd,const QRectF &clip,const QRectF &rect);
+    /*获得QTextFrameFormat*/
+    virtual QTextFrameFormat getTextFrameFormat() const = 0;
+    /*获得内容*/
+    virtual QList<QString> getHtmlData() const = 0;
 
 private:
     using Super = QObject;
@@ -101,7 +103,7 @@ class TextDocument : public QTextDocument {
 public:
     TextDocument(TextBrowser *,QObject *parent );
 
-    QTextFrame * appendTextFrame(const QTextFrameFormat &,TextItem*);
+    QTextFrame * appendTextFrame(TextItem*);
 
 private:
     using Super = QTextDocument;
