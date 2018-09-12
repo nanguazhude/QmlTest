@@ -218,14 +218,19 @@ void TextDocumentLayout::drawInlineObject(
         return;
     }
 
+    /*载入Movie*/
     insertMovie(varImageName);
 
     auto varMovie = $m$MovieCache.object(varImageName);
     if (varMovie==nullptr) {
-        Super::drawInlineObject(painter, rect, object, posInDocument, format);
+        /*载入图片失败*/
+        painter->setPen(QPen(QColor(111,112,113,200),1));
+        painter->setBrush(QColor(std::rand()&127, std::rand() & 127, std::rand() & 127,200));
+        painter->drawRect(rect);
         return;
     }
     else {
+        /*绘制图片*/
         const QImage varImage = varMovie->currentImage();
         painter->drawImage(rect, varImage);
         return;
@@ -300,9 +305,8 @@ void TextDocumentLayout::relayoutGifObjects() {
     }
 
     $m$GifItemLayoutData = std::move(varData);
-
-
-
+    
+    /*更新缓存区大小*/
     $m$MovieCache.setMaxCost(static_cast<int>(8 + $m$GifItemLayoutData.size()));
 
 }
@@ -314,6 +318,11 @@ void TextDocumentLayout::insertMovie(const QString & arg) {
     if (varMovie) { return; }
 
     varMovie = new GifMovie(arg);
+
+    /*变帧的时候更新内容*/
+    connect(varMovie, &QMovie::frameChanged,
+        this, [varMovieName = arg, this](int) { updateMovie(varMovieName); },
+        Qt::QueuedConnection);
     varMovie->start();
 
     if (varMovie->isValid() == false) {
@@ -323,10 +332,14 @@ void TextDocumentLayout::insertMovie(const QString & arg) {
         return;
     }
 
+    /*销毁的时候尝试更新缓存大小*/
+    connect(varMovie, &QObject::destroyed,
+        this, [this]() {QCoreApplication::postEvent(this, new RelayoutGifEvent); }, 
+        Qt::QueuedConnection);
+
+    /*插入缓存*/
     $m$MovieCache.insert(arg, varMovie, 1);
-    connect(varMovie, &QMovie::frameChanged, 
-        this, [varMovieName = arg,this](int) { updateMovie(varMovieName); });
-        
+            
 }
 
 GifMovie::GifMovie(const QString & arg) {
@@ -336,6 +349,7 @@ GifMovie::GifMovie(const QString & arg) {
 
 void TextDocumentLayout::updateMovie(const QString & arg) {
     qDebug() << "movie changed : " << arg;
-
+    auto varViewPort = $m$TextBrowser->viewport();
+    varViewPort->update();
 }
 
