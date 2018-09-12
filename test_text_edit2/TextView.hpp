@@ -8,6 +8,7 @@ public:
     TextBrowser(QWidget *parent = nullptr);
 private:
     using Super = QTextBrowser;
+    
 };
 
 
