@@ -60,7 +60,7 @@
 #include "private/qfunctions_p.h"
 
 #include <algorithm>
-#include "PrivateTextView.hpp"
+#include "TextView.hpp"
 
 #ifndef QT_NO_CSSPARSER
 #define QT_NO_CSSPARSER
@@ -496,7 +496,7 @@ public:
         QTextFrameData *fd, 
         const QRectF &clip, 
         const QRectF &rect) const {
-        TextItem * varItem = TextItem::getTextItem(frame);
+        auto * varItem = sstd::TextItem::getTextItem(frame);
         if (varItem) {
             varItem->drawFrameDecoration(painter,frame,fd,clip,rect);
             return true;

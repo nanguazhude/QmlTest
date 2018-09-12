@@ -8,7 +8,7 @@
 int main(int argc,char ** argv) {
     Application varApp{argc,argv};
 
-    TextBrowser varTextBrowser;
+    sstd::TextBrowser varTextBrowser;
     varTextBrowser.resize(512,512);
     varTextBrowser.show();
     
