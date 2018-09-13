@@ -15,6 +15,7 @@ namespace sstd {
     class TextBrowser;
     class TextItem;
 
+    /*gif movie*/
     class GifMovie : public QMovie {
         Q_OBJECT
     public:
@@ -23,6 +24,7 @@ namespace sstd {
         using Super = QMovie;
     };
 
+    /*document layout*/
     class TextDocumentLayout : public QTextDocumentLayout {
         Q_OBJECT
     public:
@@ -83,6 +85,7 @@ namespace sstd {
         std::unique_ptr<QEvent> $m$AboutPostEvent;
     };
 
+    /*document*/
     class TextDocument : public QTextDocument {
         Q_OBJECT
     public:

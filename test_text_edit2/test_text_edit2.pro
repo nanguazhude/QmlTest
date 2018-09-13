@@ -31,10 +31,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-HEADERS += $$PWD/TextView.hpp
+HEADERS += $$PWD/TextView.hpp \
+    ReplyTextItem.hpp \
+    RequestTextItem.hpp
 HEADERS += $$PWD/PrivateTextView.hpp
 
-SOURCES += $$PWD/main.cpp
+SOURCES += $$PWD/main.cpp \
+    ReplyTextItem.cpp \
+    RequestTextItem.cpp
 SOURCES += $$PWD/TextView.cpp
 
 HEADERS += $$PWD/from_qt_qtextdocumentlayout_p.h
