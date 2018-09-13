@@ -2162,8 +2162,16 @@ QRectF QTextDocumentLayoutPrivate::layoutFrame(QTextFrame *f, int layoutFrom, in
             fullLayout = true;
         }
 
-        if (false == runAgain) {/*首次调用此函数，初始化数据*/
-            fd->leftMargin = QFixed::fromReal(fformat.leftMargin());
+        if (false == runAgain) {/*首次布局，采用初始化的FrameFormat*/
+            auto varI = sstd::TextItem::getTextItem(f);
+            if (varI&&varI->framePureLeftEmpty()) {
+                /*首次布局，*/
+                fformat = varI->getTextFrameFormat();
+                fd->leftMargin = QFixed::fromReal(fformat.leftMargin());
+            }
+            else {
+                fd->leftMargin = QFixed::fromReal(fformat.leftMargin());
+            }
             fd->rightMargin = QFixed::fromReal(fformat.rightMargin());
         }
 
@@ -2286,11 +2294,24 @@ QRectF QTextDocumentLayoutPrivate::layoutFrame(QTextFrame *f, int layoutFrom, in
     /*先进行一次布局，获得各行大小，然后再次重新布局*/
     auto varItem = sstd::TextItem::getTextItem(f);
     if (varItem) {
+        /*设置最小高度*/
         if (fd->size.height < 64) { fd->size.height = 64; }
+        /*重新计算LeftMargin*/
         if ((runAgain == false)&&(varItem->framePureLeftEmpty())) { 
-            fd->leftMargin = 300;
-            fd->sizeDirty = true;
-            break; 
+            bool varResetLeftMargin = false;
+            /********************************************/
+            //计算是否需要重设Left Margin
+            /********************************************/
+            if(varResetLeftMargin==false){
+                /*如果不需要重设Margin则重新运行此函数*/
+                fd->sizeDirty = true;
+                break;
+            }
+            else {
+                /*如果需要重设Margin，则重新设置值，Qt会自动更新*/
+                QTextFrameFormat fformat = f->frameFormat();
+                f->setFrameFormat(fformat);
+            }
         }
     }
     /******************************************************************************/
