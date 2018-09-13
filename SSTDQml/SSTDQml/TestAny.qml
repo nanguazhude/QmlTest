@@ -1,4 +1,4 @@
-import SSTDQml 1.0
+﻿import SSTDQml 1.0
 
 MyRectangle{
     width: 12;
