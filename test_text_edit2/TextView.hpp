@@ -21,7 +21,8 @@ namespace sstd {
         virtual QList<QString> getHtmlData() const = 0;
         /*获得标题*/
         virtual QString getHtmlTitle() const { return QStringLiteral(R"(<p><font size="3">&nbsp;</font></p>)"); }
-
+        /*是否不显示左侧的空白*/
+        virtual bool framePureLeftEmpty() const =0;
     private:
         using Super = QObject;
     };

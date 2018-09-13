@@ -18,6 +18,8 @@ public:
     /*获得标题*/
     QString getHtmlTitle() const override;
 
+    bool framePureLeftEmpty() const override { return false; }
+
     template<typename Args>
     inline void setHtmlData(Args && args) { $m$HtmlData = std::forward<Args>(args); }
     template<typename Args>
