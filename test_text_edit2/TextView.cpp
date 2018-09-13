@@ -214,10 +214,12 @@ namespace sstd {
         {/*首先插入一个Frame*/
             QTextCursor varTC{ this->rootFrame() };
             varTC.movePosition(QTextCursor::End);
-            varTC.insertBlock();
-            varTC.insertHtml( arg->getHtmlTitle() );
+            if (varTC.block().length() > 1) {
+                varTC.insertBlock();
+            }
+            varTC.insertHtml(arg->getHtmlTitle());
             varAns = varTC.insertFrame(arg->getTextFrameFormat());
-            TextItem::setTextItem(varAns, arg);
+            TextItem::setTextItem(varAns, arg); 
         }
 
         do {/*插入Html*/

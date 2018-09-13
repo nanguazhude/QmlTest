@@ -19,9 +19,9 @@ public:
     QString getHtmlTitle() const override;
 
     template<typename Args>
-    inline void setHtmlData(Args && args) { $m$HtmlData = std::forward<Args>(args) }
+    inline void setHtmlData(Args && args) { $m$HtmlData = std::forward<Args>(args); }
     template<typename Args>
-    inline void setHtmlTitle(Args && args) { $m$HtmlTitle = std::forward<Args>(args) }
+    inline void setHtmlTitle(Args && args) { $m$HtmlTitle = std::forward<Args>(args); }
 private:
     using Super = TextItem;
     QList<QString> $m$HtmlData;
