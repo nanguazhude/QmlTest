@@ -527,7 +527,17 @@ public:
 
     // calls the next one
     QRectF layoutFrame(QTextFrame *f, int layoutFrom, int layoutTo, QFixed parentY = 0);
-    QRectF layoutFrame(QTextFrame *f, int layoutFrom, int layoutTo, QFixed frameWidth, QFixed frameHeight, QFixed parentY = 0);
+    QRectF layoutFrame(QTextFrame *f, int layoutFrom, int layoutTo, QFixed frameWidth, QFixed frameHeight, QFixed parentY = 0,bool = false);
+    
+    class RelayoutFrameCallPack {
+    public:
+        QTextFrame *f;
+        int layoutFrom; 
+        int layoutTo;
+        QFixed frameWidth; QFixed frameHeight; 
+        QFixed parentY ;
+    };
+    QRectF relayoutFrame(const RelayoutFrameCallPack &);
 
     void layoutBlock(const QTextBlock &bl, int blockPosition, const QTextBlockFormat &blockFormat,
                      QTextLayoutStruct *layoutStruct, int layoutFrom, int layoutTo, const QTextBlockFormat *previousBlockFormat);
@@ -2122,8 +2132,14 @@ QRectF QTextDocumentLayoutPrivate::layoutFrame(QTextFrame *f, int layoutFrom, in
     return layoutFrame(f, layoutFrom, layoutTo, width, height, parentY);
 }
 
-QRectF QTextDocumentLayoutPrivate::layoutFrame(QTextFrame *f, int layoutFrom, int layoutTo, QFixed frameWidth, QFixed frameHeight, QFixed parentY)
+QRectF QTextDocumentLayoutPrivate::relayoutFrame(const RelayoutFrameCallPack & p) {
+    return layoutFrame(p.f, p.layoutFrom, p.layoutTo, p.frameWidth, p.frameHeight, p.parentY,true);
+}
+
+QRectF QTextDocumentLayoutPrivate::layoutFrame(QTextFrame *f, int layoutFrom, int layoutTo, QFixed frameWidth, QFixed frameHeight, QFixed parentY,bool runAgain)
 {
+    RelayoutFrameCallPack varCallPack{ f,layoutFrom,layoutTo,frameWidth,frameHeight,parentY };
+    do{
     LDEBUG << "layoutFrame from=" << layoutFrom << "to=" << layoutTo;
     Q_ASSERT(data(f)->sizeDirty);
 //     qDebug("layouting frame (%d--%d), parent=%p", f->firstPosition(), f->lastPosition(), f->parentFrame());
@@ -2145,8 +2161,12 @@ QRectF QTextDocumentLayoutPrivate::layoutFrame(QTextFrame *f, int layoutFrom, in
             fd->bottomMargin = bm;
             fullLayout = true;
         }
-        fd->leftMargin = QFixed::fromReal(fformat.leftMargin());
-        fd->rightMargin = QFixed::fromReal(fformat.rightMargin());
+
+        if (false == runAgain) {/*首次调用此函数，初始化数据*/
+            fd->leftMargin = QFixed::fromReal(fformat.leftMargin());
+            fd->rightMargin = QFixed::fromReal(fformat.rightMargin());
+        }
+
         QFixed b = QFixed::fromReal(fformat.border());
         if (b != fd->border) {
             fd->border = b;
@@ -2260,9 +2280,27 @@ QRectF QTextDocumentLayoutPrivate::layoutFrame(QTextFrame *f, int layoutFrom, in
                  : fd->contentsHeight + 2*(fd->border + fd->padding) + fd->topMargin + fd->bottomMargin;
     fd->size.width = actualWidth + marginWidth;
     fd->sizeDirty = false;
-    if (layoutStruct.updateRectForFloats.isValid())
+    {
+    /******************************************************************************/
+    //add
+    /*先进行一次布局，获得各行大小，然后再次重新布局*/
+    auto varItem = sstd::TextItem::getTextItem(f);
+    if (varItem) {
+        if (fd->size.height < 64) { fd->size.height = 64; }
+        if ((runAgain == false)&&(varItem->framePureLeftEmpty())) { 
+            fd->leftMargin = 300;
+            fd->sizeDirty = true;
+            break; 
+        }
+    }
+    /******************************************************************************/
+    }
+    if (layoutStruct.updateRectForFloats.isValid()) {
         layoutStruct.updateRect |= layoutStruct.updateRectForFloats;
+    }
     return layoutStruct.updateRect;
+}while (false);
+return relayoutFrame(varCallPack);
 }
 
 void QTextDocumentLayoutPrivate::layoutFlow(QTextFrame::Iterator it, QTextLayoutStruct *layoutStruct,
