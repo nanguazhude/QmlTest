@@ -7,7 +7,7 @@ ReplyTextItem::ReplyTextItem(QObject * arg):Super(arg){
 }
 
 /**绘制边框**/
-virtual void drawFrameDecoration(
+void ReplyTextItem::drawFrameDecoration(
         QPainter *painter,
         QTextFrame *frame,
         QTextFrameData *fd,
@@ -17,13 +17,18 @@ virtual void drawFrameDecoration(
 }
 
 /*获得QTextFrameFormat*/
-virtual QTextFrameFormat getTextFrameFormat() const {
-
+QTextFrameFormat ReplyTextItem::getTextFrameFormat() const {
+    return{};
 }
 
 /*获得内容*/
-virtual QList<QString> getHtmlData() const {
+QList<QString> ReplyTextItem::getHtmlData() const {
+    return $m$HtmlData;
+}
 
+/*获得标题*/
+QString ReplyTextItem::getHtmlTitle() const {
+    return $m$HtmlTitle;
 }
 
 }/*namespace sstd*/

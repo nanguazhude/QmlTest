@@ -4,6 +4,8 @@
 
 #include "Application.hpp"
 #include "TextView.hpp"
+#include "RequestTextItem.hpp"
+#include "ReplyTextItem.hpp"
 
 int main(int argc,char ** argv) {
     Application varApp{argc,argv};

@@ -7,7 +7,7 @@ RequestTextItem::RequestTextItem(QObject *arg) : Super(arg){
 }
 
 /**绘制边框**/
-virtual void drawFrameDecoration(
+void RequestTextItem::drawFrameDecoration(
         QPainter *painter,
         QTextFrame *frame,
         QTextFrameData *fd,
@@ -17,13 +17,17 @@ virtual void drawFrameDecoration(
 }
 
 /*获得QTextFrameFormat*/
-virtual QTextFrameFormat getTextFrameFormat() const {
-
+QTextFrameFormat RequestTextItem::getTextFrameFormat() const {
+    return {};
 }
 
 /*获得内容*/
-virtual QList<QString> getHtmlData() const {
+QList<QString> RequestTextItem::getHtmlData() const {
+    return $m$HtmlData;
+}
 
+QString RequestTextItem::getHtmlTitle() const {
+    return $m$HtmlTitle;
 }
 
 }/*namespace sstd*/

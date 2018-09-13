@@ -214,6 +214,8 @@ namespace sstd {
         {/*首先插入一个Frame*/
             QTextCursor varTC{ this->rootFrame() };
             varTC.movePosition(QTextCursor::End);
+            varTC.insertBlock();
+            varTC.insertHtml( arg->getHtmlTitle() );
             varAns = varTC.insertFrame(arg->getTextFrameFormat());
             TextItem::setTextItem(varAns, arg);
         }

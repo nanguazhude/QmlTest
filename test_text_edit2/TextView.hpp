@@ -19,6 +19,8 @@ namespace sstd {
         virtual QTextFrameFormat getTextFrameFormat() const = 0;
         /*获得内容*/
         virtual QList<QString> getHtmlData() const = 0;
+        /*获得标题*/
+        virtual QString getHtmlTitle() const { return QStringLiteral(R"(<p><font size="3">&nbsp;</font></p>)"); }
 
     private:
         using Super = QObject;
