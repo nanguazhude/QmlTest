@@ -71,8 +71,11 @@ namespace sstd {
         float varX = static_cast<float>(rect.right()-varWidth-varFormat.rightMargin());
         float varY = static_cast<float>(rect.y());
 
+        painter->setPen(Qt::NoPen);
+        painter->setBrush(QColor(200,200,200,255));
         painter->drawPath(make_painter_path(varX, varY, varWidth, varHeight));
 
+        painter->setBrush(QColor(255, 200, 200, 255));
         painter->drawRect(rect.right()-62, varY, 60, 60);
 
         (void)fd;
