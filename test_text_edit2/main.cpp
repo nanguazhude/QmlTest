@@ -16,22 +16,42 @@ int main(int argc,char ** argv) {
 
     {
         auto varRequest = new sstd::RequestTextItem;
-        varRequest->setHtmlTitle(QStringLiteral(R"__(<p align="left"><font size="6" color="blue">Hellow</font></p>)__"));
+        varRequest->setHtmlTitle(QStringLiteral(R"__(<p ><font size="6" color="blue">Hellow</font></p>)__"));
         QList<QString> varHtmlData;
-        varHtmlData.push_back(QStringLiteral(R"(<p align="left"><font size="3" color="black">jjj jj jjjj jj jjjjj jjj</font></p>)"));
+        varHtmlData.push_back(QStringLiteral(R"(<p ><font size="3" color="black">jjj jj jjjj jj jjjjj jjj</font></p>)"));
         varRequest->setHtmlData(std::move(varHtmlData));
         varTextBrowser.appendTextFrame(varRequest);
     }
 
     {
-        auto varRequest = new sstd::RequestTextItem;
-        varRequest->setHtmlTitle(QStringLiteral(R"__(<p align="left"><font size="6" color="blue">Hellow</font></p>)__"));
+        auto varReply = new sstd::ReplyTextItem;
+        varReply->setHtmlTitle(QStringLiteral(R"__(<p><font size="6" color="red">World</font></p>)__"));
         QList<QString> varHtmlData;
-        varHtmlData.push_back(QStringLiteral(R"(<p align="left"><font size="14" color="black">jjj jj jjjj jj jjjjj jjj</font></p>)"));
-        varHtmlData.push_back(QStringLiteral(R"(<p align="left"><font size="14" color="black">jjj jj jjjj jj jjjjj jjj</font></p>)"));
-        varHtmlData.push_back(QStringLiteral(R"(<p align="left"><font size="14" color="black">jjj jj jjjj jj jjjjj jjj</font></p>)"));
+        varHtmlData.push_back(QStringLiteral(R"(<p ><font size="3" color="black">jjj jj jjjj jj jjjjj jjj</font></p>)"));
+        varReply->setHtmlData(std::move(varHtmlData));
+        varTextBrowser.appendTextFrame(varReply);
+    }
+
+    {
+        auto varRequest = new sstd::RequestTextItem;
+        varRequest->setHtmlTitle(QStringLiteral(R"__(<p ><font size="6" color="blue">Hellow</font></p>)__"));
+        QList<QString> varHtmlData;
+        varHtmlData.push_back(QStringLiteral(R"(<p ><font size="14" color="black">jjj jj jjjj jj jjjjj jjj</font></p>)"));
+        varHtmlData.push_back(QStringLiteral(R"(<p ><font size="14" color="black">jjj jj jjjj jj jjjjj jjj</font></p>)"));
+        varHtmlData.push_back(QStringLiteral(R"(<p ><font size="14" color="black">jjj jj jjjj jj jjjjj jjj</font></p>)"));
         varRequest->setHtmlData(std::move(varHtmlData));
         varTextBrowser.appendTextFrame(varRequest);
+    }
+
+    {
+        auto varReply = new sstd::ReplyTextItem;
+        varReply->setHtmlTitle(QStringLiteral(R"__(<p><font size="6" color="red">World</font></p>)__"));
+        QList<QString> varHtmlData;
+        varHtmlData.push_back(QStringLiteral(R"(<p ><font size="14" color="black">jjj jj jjjj jj jjjjj jjj</font></p>)"));
+        varHtmlData.push_back(QStringLiteral(R"(<p ><font size="14" color="black">jjj jj jjjj jj jjjjj jjj</font></p>)"));
+        varHtmlData.push_back(QStringLiteral(R"(<p ><font size="14" color="black">jjj jj jjjj jj jjjjj jjj</font></p>)"));
+        varReply->setHtmlData(std::move(varHtmlData));
+        varTextBrowser.appendTextFrame(varReply);
     }
 
     /*******************

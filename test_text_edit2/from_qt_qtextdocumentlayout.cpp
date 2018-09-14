@@ -2164,9 +2164,10 @@ QRectF QTextDocumentLayoutPrivate::layoutFrame(QTextFrame *f, int layoutFrom, in
 
         if (false == runAgain) {/*首次布局，采用初始化的FrameFormat*/
             auto varI = sstd::TextItem::getTextItem(f);
-            if (varI&&varI->framePureLeftEmpty()) {
+            if (varI&&(varI->framePureLeftEmpty())) {
+                if constexpr (false) { qDebug() << fformat.leftMargin(); }
                 /*首次布局，*/
-                fformat = varI->getTextFrameFormat();
+                fformat = varI->getTextFrameFormat(); 
                 fd->leftMargin = QFixed::fromReal(fformat.leftMargin());
             }
             else {
@@ -2288,6 +2289,7 @@ QRectF QTextDocumentLayoutPrivate::layoutFrame(QTextFrame *f, int layoutFrom, in
                  : fd->contentsHeight + 2*(fd->border + fd->padding) + fd->topMargin + fd->bottomMargin;
     fd->size.width = actualWidth + marginWidth;
     fd->sizeDirty = false;
+
     {
     /******************************************************************************/
     //add
@@ -2297,11 +2299,22 @@ QRectF QTextDocumentLayoutPrivate::layoutFrame(QTextFrame *f, int layoutFrom, in
         /*设置最小高度*/
         if (fd->size.height < 64) { fd->size.height = 64; }
         /*重新计算LeftMargin*/
-        if ((runAgain == false)&&(varItem->framePureLeftEmpty())) { 
+        if ((runAgain == false)&&(varItem->framePureLeftEmpty())) {
             bool varResetLeftMargin = false;
             /********************************************/
             //计算是否需要重设Left Margin
             /********************************************/
+
+            /*realleft = right - padding - padding - textrealywidth -rightmaring*/
+            QTextFrameFormat fformat = f->frameFormat();
+            auto varRight = layoutStruct.x_right.toReal();
+            auto varPadding = fformat.padding();
+            auto varTextRealyWidth = layoutStruct.contentsWidth.toReal();
+            //auto varRightMaring = fformat.rightMargin();
+            auto varRealLeft = varRight - varPadding  - varTextRealyWidth  ;
+            auto varCurrentLeft = fformat.leftMargin() + fformat.border() + fformat.padding();
+            varResetLeftMargin = (std::abs(varCurrentLeft-varRealLeft)>1.5);
+
             if(varResetLeftMargin==false){
                 /*如果不需要重设Margin则重新运行此函数*/
                 fd->sizeDirty = true;
@@ -2309,8 +2322,10 @@ QRectF QTextDocumentLayoutPrivate::layoutFrame(QTextFrame *f, int layoutFrom, in
             }
             else {
                 /*如果需要重设Margin，则重新设置值，Qt会自动更新*/
-                QTextFrameFormat fformat = f->frameFormat();
-                f->setFrameFormat(fformat);
+                const auto & varWantedLeftMargin = varRealLeft ;
+                fd->leftMargin = QFixed::fromReal( varWantedLeftMargin );
+                fd->sizeDirty = true;
+                break;
             }
         }
     }

@@ -217,7 +217,7 @@ namespace sstd {
             if (varTC.block().length() > 1) {
                 varTC.insertBlock();
             }
-            varTC.insertHtml(arg->getHtmlTitle());
+            varTC.insertHtml(arg->getHtmlTitle())/*插入标题*/;
             varAns = varTC.insertFrame(arg->getTextFrameFormat());
             TextItem::setTextItem(varAns, arg); 
         }
