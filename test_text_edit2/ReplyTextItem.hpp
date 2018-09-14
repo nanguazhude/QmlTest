@@ -19,6 +19,7 @@ public:
     QString getHtmlTitle() const override;
 
     bool framePureLeftEmpty() const override { return true; }
+    bool isHtmlTitleAlignRight() const { return true; }
 
     template<typename Args>
     inline void setHtmlData(Args && args) { $m$HtmlData = std::forward<Args>(args); }

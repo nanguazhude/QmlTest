@@ -219,7 +219,15 @@ namespace sstd {
             }
             varTC.insertHtml(arg->getHtmlTitle())/*插入标题*/;
             varAns = varTC.insertFrame(arg->getTextFrameFormat());
-            TextItem::setTextItem(varAns, arg); 
+            TextItem::setTextItem(varAns, arg);
+        }
+
+        if(arg->isHtmlTitleAlignRight()){/*设置标题右对齐*/
+            auto varTitleBlock = varAns->begin().currentBlock().previous();
+            auto varBlockFormat = varTitleBlock.blockFormat();
+            varBlockFormat.setAlignment(Qt::AlignRight);
+            QTextCursor varCursor{ varTitleBlock };
+            varCursor.setBlockFormat(varBlockFormat);
         }
 
         do {/*插入Html*/

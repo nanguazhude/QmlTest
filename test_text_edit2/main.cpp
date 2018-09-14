@@ -12,7 +12,6 @@ int main(int argc,char ** argv) {
 
     sstd::TextBrowser varTextBrowser;
     varTextBrowser.resize(512,512);
-/********************************************/
 
     {
         auto varRequest = new sstd::RequestTextItem;
@@ -27,7 +26,8 @@ int main(int argc,char ** argv) {
         auto varReply = new sstd::ReplyTextItem;
         varReply->setHtmlTitle(QStringLiteral(R"__(<p><font size="6" color="red">World</font></p>)__"));
         QList<QString> varHtmlData;
-        varHtmlData.push_back(QStringLiteral(R"(<p ><font size="3" color="black">jjj jj jjjj jj jjjjj jjj</font></p>)"));
+        varHtmlData.push_back(QStringLiteral(R"(<p ><font size="3" color="black">j j</font></p>)"));
+        varHtmlData.push_back(QStringLiteral(R"(<p ><font size="3" color="black">jjj j</font></p>)"));
         varReply->setHtmlData(std::move(varHtmlData));
         varTextBrowser.appendTextFrame(varReply);
     }
@@ -54,8 +54,6 @@ int main(int argc,char ** argv) {
         varTextBrowser.appendTextFrame(varReply);
     }
 
-    /*******************
-/********************************************/
     varTextBrowser.show();
     
     return varApp.exec();
