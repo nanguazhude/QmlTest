@@ -1,14 +1,14 @@
-﻿#include <cstdlib>
+﻿#include <list>
 #include <memory>
-#include <list>
+#include <fstream>
+#include <cstdlib>
 #include <cstddef>
 #include <utility>
+#include <iostream>
+#include <execution>
 #include <algorithm>
 #include <filesystem>
-#include <iostream>
-#include <fstream>
 #include <functional>
-#include <execution>
 
 class DutyItem {
 public:
@@ -36,6 +36,7 @@ private:
     inline void _p_copy_files(const CopyInformation &) const;
     inline void _p_create_dirs(const CopyInformation &) const;
     inline static void _p_copy_a_file(const std::filesystem::path &, const std::filesystem::path &);
+    inline static void __p_copy_a_file(const std::filesystem::path &, const std::filesystem::path &);
     inline static CopyInformation _p_get_dir_copy_information(const std::filesystem::path &, const std::filesystem::path &);
 };
 
@@ -172,7 +173,11 @@ inline void Duty::_p_copy_files(const CopyInformation & items) const {
         [](const auto & a) { _p_copy_a_file(a.first, a.second); });
 }
 
-inline void Duty::_p_copy_a_file(const std::filesystem::path & a, const std::filesystem::path & b) try {
+inline void Duty::_p_copy_a_file(const std::filesystem::path & a, const std::filesystem::path & b) {
+    return __p_copy_a_file(a,b);
+}
+
+inline void Duty::__p_copy_a_file(const std::filesystem::path & a, const std::filesystem::path & b) try {
     const auto varBStates = std::filesystem::status(b);
     if (std::filesystem::exists(varBStates)) {
 
