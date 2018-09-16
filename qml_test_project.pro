@@ -40,6 +40,9 @@ test_text_edit1.depends+=buildinstall
 test_text_edit2.file = $$PWD/test_text_edit2/test_text_edit2.pro
 test_text_edit3.depends+=buildinstall
 
+key_test.file = $$PWD/key_test/key_test.pro
+key_test.depends+=buildinstall
+
 SUBDIRS += test_0
 SUBDIRS += test_1
 SUBDIRS += test_2
@@ -51,4 +54,5 @@ SUBDIRS += test_4
 SUBDIRS += test_text_edit
 SUBDIRS += test_text_edit1
 SUBDIRS += test_text_edit2
+SUBDIRS += key_test
 
