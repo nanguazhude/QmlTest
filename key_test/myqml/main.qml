@@ -22,33 +22,37 @@ Rectangle{
             anchors.fill: parent
             id : _id_blue
             Keys.onPressed: {
-                console.log("blue" +(count++) )
+                console.log("blue-" +(_id_red.count++) )
                 event.accepted = false ;
             }
-            Keys.enabled: true
+            Keys.enabled: true ;
             Keys.forwardTo: [_id_green]
-            focus: true
+            focus: true ;
+            onActiveFocusChanged: console.log( activeFocus?"blue:a":"blue:b" )
         }/*endl*/
         Keys.onPressed: {
             console.log("green")
             event.accepted = false ;
         }
         Keys.enabled: true
-        focus: true ;
+        focus: false ;
         //Keys.forwardTo: [_id_red]
+        onActiveFocusChanged: console.log( activeFocus?"green:a":"green:b" )
     }/*endl*/
     Keys.onPressed: {
         console.log("red")
         event.accepted = false ;
     }
     Keys.enabled: true
-    focus: false
-    //focus: true
-
+    focus: false ;
+    onActiveFocusChanged: console.log( activeFocus?"red:a":"red:b" )
 }
 
 
+
+
 /**
+//FocusScope
 QQuickKeysAttached
 qquickitem_p.h
 Keyboard Focus in Qt Quick
