@@ -13,3 +13,4 @@ bin/debug
 *.stash
 *.qmlc
 *.dgml
+build-*/

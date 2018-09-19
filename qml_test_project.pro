@@ -56,3 +56,15 @@ SUBDIRS += test_text_edit1
 SUBDIRS += test_text_edit2
 SUBDIRS += key_test
 
+test_library_0.file = $$PWD/test_library_0/test_library_0.pro
+test_library_0.depends += buildinstall
+SUBDIRS += test_library_0
+
+test_library_0_app.file = $$PWD/test_library_0_app/test_library_0_app.pro
+test_library_0_app.depends += test_library_0
+SUBDIRS += test_library_0_app
+
+
+
+
+
