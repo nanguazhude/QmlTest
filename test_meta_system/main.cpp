@@ -37,7 +37,8 @@ int main(int argc ,char ** argv){
     /********************************/
 
     return varApp.exec();
-
+    //Q_NAMESPACE
+    //Q_GADGET
 }
 
 

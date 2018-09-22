@@ -27,5 +27,6 @@ SOURCES += main.cpp \
     TestWidet.cpp
 
 HEADERS += \
-    TestWidet.hpp
+    TestWidet.hpp \
+    Test1Private.hpp
 
