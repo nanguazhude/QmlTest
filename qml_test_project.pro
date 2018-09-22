@@ -64,7 +64,9 @@ test_library_0_app.file = $$PWD/test_library_0_app/test_library_0_app.pro
 test_library_0_app.depends += test_library_0
 SUBDIRS += test_library_0_app
 
-
+test_meta_system.file = $$PWD/test_meta_system/test_meta_system.pro
+test_meta_system.depends += buildinstall
+SUBDIRS += test_meta_system
 
 
 

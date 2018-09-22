@@ -32,9 +32,12 @@ int main(int argc,char ** argv){
         varTypeIndex = typeid(*classA);
 
         qDebug() << varTypeIndex.name();
-
+        dynamic_cast<QTextBlockUserData*>(classA);
+                 
         delete classA;
         varLibrary.unload();
+
+        //dynamic_cast<QTextBlockUserData*>(classA);
 
         /*type_index do not support dynamimc library*/
         //qDebug() << varTypeIndex.name();
