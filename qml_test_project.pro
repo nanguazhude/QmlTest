@@ -68,5 +68,7 @@ test_meta_system.file = $$PWD/test_meta_system/test_meta_system.pro
 test_meta_system.depends += buildinstall
 SUBDIRS += test_meta_system
 
-
+test_child_window.file = $$PWD/test_child_window/test_child_window.pro
+test_child_window.depends += buildinstall
+SUBDIRS += test_child_window
 
