@@ -29,6 +29,17 @@ int main(int argc, char ** argv) {
     varWindows1.resize(512,512);
     varWindows1.show();
         
+    {
+        /*QObject sss;
+        class UserTest : public QObjectUserData {
+        public:
+            virtual ~UserTest() {
+
+            }
+        };
+        sss.setUserData(483873452, new UserTest);*/
+    }
+
     return varApp.exec();
 
 }
