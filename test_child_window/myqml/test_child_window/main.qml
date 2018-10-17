@@ -1,7 +1,13 @@
 ﻿import QtQuick 2.9
 
-Rectangle{
-    color: Qt.rgba(0,0,0,0)
+BorderImage {
+    source: "background.png"
+    width: 100;
+    height: 100
+    //border.left: 5;
+    //border.top: 5
+    //border.right: 5;
+    //border.bottom: 5
     id : _root;
 
 

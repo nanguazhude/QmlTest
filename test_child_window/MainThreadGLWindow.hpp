@@ -2,9 +2,13 @@
 
 #include <array>
 #include <QtGui/qwindow.h>
- 
+#include <QtQuick/qquickwindow.h>
+#include <QtQuick/qquickview.h>
+
 class QOpenGLContext;
+class QQuickWindow;
 class QTimer;
+
 
 class MainThreadGLWindow : public QWindow {
     Q_OBJECT
@@ -15,8 +19,8 @@ public:
     inline void setCleanColor(float r,float g,float b,float a=1.0f);
     inline void setCleanColor(const std::array<float,4> &);
     std::array<float,4> getCleanColor() const{ return mmm_CleanColor; }
-    void setContent(QWindow *);
-    QWindow * getContent() const {
+    void setContent(QQuickView *);
+    QQuickView * getContent() const {
         return mmm_Content;
     }
 public:
@@ -30,13 +34,14 @@ protected:
     void resizeEvent(QResizeEvent *ev) override;
     void showEvent(QShowEvent *ev) override;
     void hideEvent(QHideEvent *ev) override;
-private:
+public:
     std::array<float,4> mmm_CleanColor{0,0,0,1};
     using Super = QWindow ;
     QOpenGLContext * mmm_Contex{nullptr};
-    QWindow * mmm_Content{nullptr};
+    QQuickView * mmm_Content{nullptr};
     std::uint32_t mmm_ResizeStamp{0};
     QTimer * mmm_ResizeTimer{nullptr};
+    std::atomic<QQuickWindow::RenderStage> mmm_RenderState;
 };
 
 inline void MainThreadGLWindow::setCleanColor(float r,float g,float b,float a){
