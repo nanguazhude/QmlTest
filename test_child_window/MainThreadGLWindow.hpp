@@ -4,6 +4,7 @@
 #include <QtGui/qwindow.h>
  
 class QOpenGLContext;
+class QTimer;
 
 class MainThreadGLWindow : public QWindow {
     Q_OBJECT
@@ -34,6 +35,8 @@ private:
     using Super = QWindow ;
     QOpenGLContext * mmm_Contex{nullptr};
     QWindow * mmm_Content{nullptr};
+    std::uint32_t mmm_ResizeStamp{0};
+    QTimer * mmm_ResizeTimer{nullptr};
 };
 
 inline void MainThreadGLWindow::setCleanColor(float r,float g,float b,float a){
